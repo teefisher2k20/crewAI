@@ -491,10 +491,12 @@ def print_step_success(name: str, type: str, folder_name: str) -> None:
 
     if type == "crew":
         steps = [f"cd {folder_name}", "crewai install", "crewai run"]
-    else:
+    elif type == "flow":
         steps = [f"cd {folder_name}", "crewai install", "crewai flow kickoff"]
+    else:
+        steps = ["crewai install", "crewai flow kickoff"]
 
-    content = f"Your {type} [bold green]{name}[/bold green] has been created successfully! 🚀\n\n"
+    content = f"Your {type.replace('_', ' ')} [bold green]{name}[/bold green] has been created successfully! 🚀\n\n"
     content += "[bold]Next steps:[/bold]\n"
     for step in steps:
         content += f"  - [cyan]{step}[/cyan]\n"
