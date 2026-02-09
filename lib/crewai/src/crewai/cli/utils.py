@@ -483,6 +483,32 @@ def _load_tools_from_init(init_file: Path) -> list[dict[str, Any]]:
         sys.modules.pop("temp_module", None)
 
 
+def print_step_success(name: str, type: str, folder_name: str) -> None:
+    """
+    Prints a success message with next steps for the user.
+    """
+    from rich.panel import Panel
+
+    if type == "crew":
+        steps = [f"cd {folder_name}", "crewai install", "crewai run"]
+    else:
+        steps = [f"cd {folder_name}", "crewai install", "crewai flow kickoff"]
+
+    content = f"Your {type} [bold green]{name}[/bold green] has been created successfully! 🚀\n\n"
+    content += "[bold]Next steps:[/bold]\n"
+    for step in steps:
+        content += f"  - [cyan]{step}[/cyan]\n"
+
+    console.print(
+        Panel(
+            content,
+            title="[bold green]Success[/bold green]",
+            border_style="green",
+            padding=(1, 2),
+        )
+    )
+
+
 def _print_no_tools_warning() -> None:
     """
     Display warning and usage instructions if no tools were found.

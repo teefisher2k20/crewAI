@@ -10,7 +10,12 @@ from crewai.cli.provider import (
     select_model,
     select_provider,
 )
-from crewai.cli.utils import copy_template, load_env_vars, write_env_file
+from crewai.cli.utils import (
+    copy_template,
+    load_env_vars,
+    print_step_success,
+    write_env_file,
+)
 
 
 def create_folder_structure(name, parent_folder=None):
@@ -270,4 +275,4 @@ def create_crew(name, provider=None, skip_provider=False, parent_folder=None):
             dst_file = src_folder / file_name
             copy_template(src_file, dst_file, name, class_name, folder_name)
 
-    click.secho(f"Crew {name} created successfully!", fg="green", bold=True)
+    print_step_success(name, "crew", folder_name)
