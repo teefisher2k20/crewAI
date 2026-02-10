@@ -2,6 +2,7 @@ from pathlib import Path
 
 import click
 
+from crewai.cli.utils import print_step_instructions
 from crewai.telemetry import Telemetry
 
 
@@ -97,3 +98,4 @@ def create_flow(name):
             )
 
     click.secho(f"Flow {name} created successfully!", fg="green", bold=True)
+    print_step_instructions(folder_name, "flow")
