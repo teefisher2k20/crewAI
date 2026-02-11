@@ -312,4 +312,23 @@ def create_crew(
             dst_file = src_folder / file_name
             copy_template(src_file, dst_file, name, class_name, folder_name)
 
-    click.secho(f"Crew {name} created successfully!", fg="green", bold=True)
+    from rich.console import Console
+    from rich.panel import Panel
+
+    console = Console()
+    console.print(f"\n[bold green]Crew {name} created successfully![/bold green]")
+    if not parent_folder:
+        next_steps = (
+            f"  - [bold]cd {folder_name}[/bold]\n"
+            f"  - [bold]crewai install[/bold]\n"
+            f"  - [bold]crewai run[/bold]"
+        )
+        console.print(
+            Panel(
+                next_steps,
+                title="🚀 Next Steps",
+                border_style="blue",
+                padding=(1, 2),
+                expand=False,
+            )
+        )
