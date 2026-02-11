@@ -98,18 +98,33 @@ def create(type, name, provider, skip_provider=False):
 )
 def version(tools):
     """Show the installed version of crewai."""
+    from rich.console import Console
+    from rich.panel import Panel
+
+    console = Console()
     try:
         crewai_version = get_version("crewai")
     except Exception:
         crewai_version = "unknown version"
-    click.echo(f"crewai version: {crewai_version}")
+
+    version_text = f"[bold]crewai version:[/bold] {crewai_version}"
 
     if tools:
         try:
-            tools_version = get_version("crewai")
-            click.echo(f"crewai tools version: {tools_version}")
+            tools_version = get_version("crewai-tools")
+            version_text += f"\n[bold]crewai tools version:[/bold] {tools_version}"
         except Exception:
-            click.echo("crewai tools not installed")
+            version_text += "\n[bold]crewai tools:[/bold] not installed"
+
+    console.print(
+        Panel(
+            version_text,
+            title="✨ CrewAI Version Info",
+            border_style="cyan",
+            padding=(1, 2),
+            expand=False,
+        )
+    )
 
 
 @crewai.command()

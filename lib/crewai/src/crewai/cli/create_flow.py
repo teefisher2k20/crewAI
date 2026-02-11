@@ -96,4 +96,22 @@ def create_flow(name):
                 fg="yellow",
             )
 
-    click.secho(f"Flow {name} created successfully!", fg="green", bold=True)
+    from rich.console import Console
+    from rich.panel import Panel
+
+    console = Console()
+    console.print(f"\n[bold green]Flow {name} created successfully![/bold green]")
+    next_steps = (
+        f"  - [bold]cd {folder_name}[/bold]\n"
+        f"  - [bold]crewai install[/bold]\n"
+        f"  - [bold]crewai run[/bold]"
+    )
+    console.print(
+        Panel(
+            next_steps,
+            title="🚀 Next Steps",
+            border_style="blue",
+            padding=(1, 2),
+            expand=False,
+        )
+    )
