@@ -511,3 +511,31 @@ def _print_no_tools_warning() -> None:
         "    # ... implementation\n"
         "    return result\n"
     )
+
+
+def print_next_steps(folder_name: str, type: str = "crew") -> None:
+    """Print the next steps for the user after project creation."""
+    from rich.panel import Panel
+
+    if type == "crew":
+        run_command = "crewai run"
+    elif type == "flow":
+        run_command = "crewai flow kickoff"
+    else:
+        run_command = f"crewai {type} run"
+
+    steps = [
+        f"1. [bold]cd {folder_name}[/bold]",
+        "2. [bold]crewai install[/bold]",
+        f"3. [bold]{run_command}[/bold]",
+    ]
+
+    panel = Panel(
+        "\n".join(steps),
+        title="🚀 Next Steps",
+        border_style="bright_blue",
+        expand=False,
+        padding=(1, 2),
+    )
+    console.print("\n")
+    console.print(panel)
