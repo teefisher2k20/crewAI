@@ -11,7 +11,12 @@ from crewai.cli.provider import (
     select_model,
     select_provider,
 )
-from crewai.cli.utils import copy_template, load_env_vars, write_env_file
+from crewai.cli.utils import (
+    copy_template,
+    load_env_vars,
+    print_next_steps,
+    write_env_file,
+)
 
 
 def get_reserved_script_names() -> set[str]:
@@ -313,3 +318,5 @@ def create_crew(
             copy_template(src_file, dst_file, name, class_name, folder_name)
 
     click.secho(f"Crew {name} created successfully!", fg="green", bold=True)
+    if not parent_folder:
+        print_next_steps(folder_name)
