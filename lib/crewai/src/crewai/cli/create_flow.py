@@ -97,3 +97,7 @@ def create_flow(name):
             )
 
     click.secho(f"Flow {name} created successfully!", fg="green", bold=True)
+
+    from crewai.cli.utils import print_next_steps
+
+    print_next_steps(folder_name)
