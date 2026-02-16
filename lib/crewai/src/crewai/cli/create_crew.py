@@ -313,3 +313,8 @@ def create_crew(
             copy_template(src_file, dst_file, name, class_name, folder_name)
 
     click.secho(f"Crew {name} created successfully!", fg="green", bold=True)
+
+    if not parent_folder:
+        from crewai.cli.utils import print_next_steps
+
+        print_next_steps(folder_name)
