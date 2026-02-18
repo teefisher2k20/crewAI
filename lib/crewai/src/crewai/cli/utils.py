@@ -9,6 +9,7 @@ from typing import Any, cast, get_type_hints
 
 import click
 from rich.console import Console
+from rich.panel import Panel
 import tomli
 
 from crewai.cli.config import Settings
@@ -511,3 +512,18 @@ def _print_no_tools_warning() -> None:
         "    # ... implementation\n"
         "    return result\n"
     )
+
+
+def print_next_steps(folder_name: str) -> None:
+    """Print the next steps for the user."""
+    panel = Panel(
+        f"To get started, run the following commands:\n\n"
+        f"  [bold cyan]cd {folder_name}[/bold cyan]\n"
+        f"  [bold cyan]crewai install[/bold cyan]\n"
+        f"  [bold cyan]crewai run[/bold cyan]\n\n"
+        f"Check out the documentation at [bold cyan]https://docs.crewai.com[/bold cyan]",
+        title="🚀 Next Steps",
+        border_style="green",
+        padding=(1, 2),
+    )
+    console.print(panel)
