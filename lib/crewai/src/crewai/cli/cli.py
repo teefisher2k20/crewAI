@@ -98,18 +98,36 @@ def create(type, name, provider, skip_provider=False):
 )
 def version(tools):
     """Show the installed version of crewai."""
+    from rich.table import Table
+
+    from crewai.cli.utils import console
+    from crewai.cli.version import is_newer_version_available
+
     try:
         crewai_version = get_version("crewai")
     except Exception:
         crewai_version = "unknown version"
-    click.echo(f"crewai version: {crewai_version}")
+
+    table = Table(show_header=False, box=None, padding=(0, 1))
+    table.add_row("crewai version:", f"[bold cyan]{crewai_version}[/bold cyan]")
 
     if tools:
         try:
-            tools_version = get_version("crewai")
-            click.echo(f"crewai tools version: {tools_version}")
+            tools_version = get_version("crewai-tools")
+            table.add_row(
+                "crewai tools version:", f"[bold cyan]{tools_version}[/bold cyan]"
+            )
         except Exception:
-            click.echo("crewai tools not installed")
+            table.add_row("crewai tools version:", "[red]not installed[/red]")
+
+    console.print(table)
+
+    is_newer, current, latest = is_newer_version_available()
+    if is_newer:
+        console.print(
+            f"\n[bold yellow]✨ A new version of crewAI is available: {latest}[/bold yellow]"
+        )
+        console.print(f"[dim]Run 'pip install -U crewai' to update.[/dim]\n")
 
 
 @crewai.command()
