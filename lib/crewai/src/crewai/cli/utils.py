@@ -9,6 +9,7 @@ from typing import Any, cast, get_type_hints
 
 import click
 from rich.console import Console
+from rich.panel import Panel
 import tomli
 
 from crewai.cli.config import Settings
@@ -126,6 +127,25 @@ def _get_project_attribute(
 
 def _get_nested_value(data: dict[str, Any], keys: list[str]) -> Any:
     return reduce(dict.__getitem__, keys, data)
+
+
+def print_next_steps(folder_name: str, is_flow: bool = False) -> None:
+    """Prints the next steps for the user after creating a crew or flow."""
+    entity = "flow" if is_flow else "crew"
+
+    steps = [
+        f"Navigate to your project: [bold cyan]cd {folder_name}[/bold cyan]",
+        "Install dependencies: [bold cyan]crewai install[/bold cyan]",
+        f"Run your {entity}: [bold cyan]crewai run[/bold cyan]",
+    ]
+
+    panel = Panel(
+        "\n".join(steps),
+        title="[bold]🚀 Next Steps[/bold]",
+        expand=False,
+        border_style="bright_blue",
+    )
+    console.print(panel)
 
 
 def fetch_and_json_env_file(env_file_path: str = ".env") -> dict[str, Any]:
