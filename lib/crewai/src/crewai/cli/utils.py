@@ -511,3 +511,29 @@ def _print_no_tools_warning() -> None:
         "    # ... implementation\n"
         "    return result\n"
     )
+
+def print_next_steps(folder_name: str, is_flow: bool = False) -> None:
+    """Print the next steps for the user after creating a crew or flow."""
+    from rich.panel import Panel
+
+    entity = "Flow" if is_flow else "Crew"
+
+    message = (
+        f"To get started with your new {entity}, follow these steps:\n\n"
+        f"1. Navigate to your project directory:\n"
+        f"   [bold cyan]cd {folder_name}[/bold cyan]\n\n"
+        f"2. Install the dependencies:\n"
+        f"   [bold cyan]crewai install[/bold cyan]\n\n"
+        f"3. Run your {entity}:\n"
+        f"   [bold cyan]crewai run[/bold cyan]"
+    )
+
+    panel = Panel(
+        message,
+        title=f"🚀 Next Steps for your {entity}",
+        expand=False,
+        border_style="green",
+        padding=(1, 2),
+    )
+    console.print("\n")
+    console.print(panel)
