@@ -9,6 +9,7 @@ from typing import Any, cast, get_type_hints
 
 import click
 from rich.console import Console
+from rich.panel import Panel
 import tomli
 
 from crewai.cli.config import Settings
@@ -511,3 +512,21 @@ def _print_no_tools_warning() -> None:
         "    # ... implementation\n"
         "    return result\n"
     )
+
+
+def print_next_steps(folder_name: str) -> None:
+    """
+    Display next steps for the user after creating a crew or flow.
+    """
+    panel = Panel(
+        f"1. [bold]cd {folder_name}[/bold]\n"
+        "2. [bold]crewai install[/bold]\n"
+        "3. [bold]crewai run[/bold]",
+        title="🚀 Next Steps",
+        border_style="green",
+        padding=(1, 2),
+        expand=False,
+    )
+    console.print("\n")
+    console.print(panel)
+    console.print("\n")
