@@ -98,18 +98,30 @@ def create(type, name, provider, skip_provider=False):
 )
 def version(tools):
     """Show the installed version of crewai."""
+    from crewai.cli.utils import console
+    from crewai.cli.version import get_crewai_version, is_newer_version_available
+
     try:
-        crewai_version = get_version("crewai")
+        crewai_version = get_crewai_version()
     except Exception:
         crewai_version = "unknown version"
-    click.echo(f"crewai version: {crewai_version}")
+    console.print(f"crewai version: {crewai_version}")
 
     if tools:
         try:
-            tools_version = get_version("crewai")
-            click.echo(f"crewai tools version: {tools_version}")
+            tools_version = get_version("crewai-tools")
+            console.print(f"crewai tools version: {tools_version}")
         except Exception:
-            click.echo("crewai tools not installed")
+            console.print("crewai tools not installed")
+
+    try:
+        is_newer, current, latest = is_newer_version_available()
+        if is_newer and latest:
+            console.print(f"\n[bold yellow]Update available: {latest}[/bold yellow]")
+            console.print(f"Current version: {current}")
+            console.print("Run [bold cyan]pip install -U crewai[/bold cyan] to update")
+    except Exception:
+        pass
 
 
 @crewai.command()
