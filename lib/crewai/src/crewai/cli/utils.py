@@ -9,6 +9,7 @@ from typing import Any, cast, get_type_hints
 
 import click
 from rich.console import Console
+from rich.panel import Panel
 import tomli
 
 from crewai.cli.config import Settings
@@ -511,3 +512,34 @@ def _print_no_tools_warning() -> None:
         "    # ... implementation\n"
         "    return result\n"
     )
+
+
+def print_next_steps(folder_name: str, step_type: str = "crew") -> None:
+    """
+    Print the next steps for the user after creating a crew or flow.
+
+    Args:
+    - folder_name (str): The name of the folder where the project was created.
+    - step_type (str): The type of project created (crew, flow, or embedded_crew).
+    """
+    if step_type == "embedded_crew":
+        panel = Panel(
+            f"  [bold cyan]1.[/bold cyan] Edit [bold white]src/{folder_name}/main.py[/bold white] to use your new crew\n"
+            "  [bold cyan]2.[/bold cyan] Run [bold white]crewai run[/bold white]",
+            title="🚀 Next Steps",
+            expand=False,
+            border_style="bright_blue",
+        )
+    else:
+        panel = Panel(
+            f"  [bold cyan]1.[/bold cyan] cd [bold white]{folder_name}[/bold white]\n"
+            "  [bold cyan]2.[/bold cyan] [bold white]crewai install[/bold white]\n"
+            "  [bold cyan]3.[/bold cyan] [bold white]crewai run[/bold white]",
+            title="🚀 Next Steps",
+            expand=False,
+            border_style="bright_blue",
+        )
+
+    console.print("\n")
+    console.print(panel)
+    console.print("\n")
