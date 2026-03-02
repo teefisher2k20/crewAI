@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from crewai.cli.utils import copy_template
+from crewai.cli.utils import copy_template, print_next_steps
 from crewai.utilities.printer import Printer
 
 
@@ -31,9 +31,10 @@ def add_crew_to_flow(crew_name: str) -> None:
     # Create the crew within the flow's crews directory
     create_embedded_crew(crew_name, parent_folder=crews_folder)
 
-    click.echo(
-        f"Crew {crew_name} added to the current flow successfully!",
+    click.secho(
+        f"Crew {crew_name} added to the flow successfully!", fg="green", bold=True
     )
+    print_next_steps(crew_name, step_type="embedded_crew")
 
 
 def create_embedded_crew(crew_name: str, parent_folder: Path) -> None:
@@ -71,6 +72,3 @@ def create_embedded_crew(crew_name: str, parent_folder: Path) -> None:
     dst_file = crew_folder / crew_template_file
     copy_template(src_file, dst_file, crew_name, class_name, folder_name)
 
-    click.secho(
-        f"Crew {crew_name} added to the flow successfully!", fg="green", bold=True
-    )
