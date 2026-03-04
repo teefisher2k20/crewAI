@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from crewai.cli.utils import copy_template
+from crewai.cli.utils import copy_template, print_next_steps
 from crewai.utilities.printer import Printer
 
 
@@ -29,14 +29,16 @@ def add_crew_to_flow(crew_name: str) -> None:
         raise click.ClickException("Crews folder does not exist in the current flow.")
 
     # Create the crew within the flow's crews directory
-    create_embedded_crew(crew_name, parent_folder=crews_folder)
+    folder_name = create_embedded_crew(crew_name, parent_folder=crews_folder)
 
     click.echo(
         f"Crew {crew_name} added to the current flow successfully!",
     )
+    if folder_name:
+        print_next_steps(folder_name, "embedded_crew")
 
 
-def create_embedded_crew(crew_name: str, parent_folder: Path) -> None:
+def create_embedded_crew(crew_name: str, parent_folder: Path) -> str | None:
     """Create a new crew within an existing flow project."""
     folder_name = crew_name.replace(" ", "_").replace("-", "_").lower()
     class_name = crew_name.replace("_", " ").replace("-", " ").title().replace(" ", "")
@@ -74,3 +76,4 @@ def create_embedded_crew(crew_name: str, parent_folder: Path) -> None:
     click.secho(
         f"Crew {crew_name} added to the flow successfully!", fg="green", bold=True
     )
+    return folder_name
