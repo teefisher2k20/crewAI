@@ -9,6 +9,7 @@ from typing import Any, cast, get_type_hints
 
 import click
 from rich.console import Console
+from rich.panel import Panel
 import tomli
 
 from crewai.cli.config import Settings
@@ -384,6 +385,30 @@ def fetch_crews(module_attr: Any) -> list[Crew]:
             if crew_instance := get_crew_instance(attr):
                 crew_instances.append(crew_instance)
     return crew_instances
+
+
+def print_next_steps(folder_name: str, step_type: str = "crew") -> None:
+    """Print the next steps for the user after creating a crew or flow."""
+    if step_type == "embedded_crew":
+        panel = Panel(
+            f"""[bold]1.[/bold] Edit your flow's [bold]main.py[/bold] to use the new crew.
+[bold]2.[/bold] Run [bold]crewai run[/bold] to execute the flow.""",
+            title="🚀 Next Steps",
+            expand=False,
+            border_style="bright_blue",
+        )
+    else:
+        panel = Panel(
+            f"""[bold]1.[/bold] [bold]cd {folder_name}[/bold]
+[bold]2.[/bold] [bold]crewai install[/bold]
+[bold]3.[/bold] [bold]crewai run[/bold]""",
+            title="🚀 Next Steps",
+            expand=False,
+            border_style="bright_blue",
+        )
+    console.print("\n")
+    console.print(panel)
+    console.print("\n")
 
 
 def is_valid_tool(obj: Any) -> bool:
