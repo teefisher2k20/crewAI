@@ -511,3 +511,30 @@ def _print_no_tools_warning() -> None:
         "    # ... implementation\n"
         "    return result\n"
     )
+
+
+def print_next_steps(folder_name: str, step_type: str = "crew") -> None:
+    """Print the next steps for the user."""
+    from rich.panel import Panel
+
+    if step_type == "embedded_crew":
+        panel = Panel(
+            f"[bold]1.[/bold] Edit your new crew: [green]{folder_name}[/green]\n"
+            f"[bold]2.[/bold] Edit your [green]main.py[/green] to use the new crew\n"
+            f"[bold]3.[/bold] Run your flow: [bold][green]crewai run[/green][/bold]",
+            title="🚀 Next Steps",
+            border_style="bright_blue",
+            expand=False,
+        )
+    else:
+        panel = Panel(
+            f"[bold]1.[/bold] Go to your project: [bold][green]cd {folder_name}[/green][/bold]\n"
+            f"[bold]2.[/bold] Install dependencies: [bold][green]crewai install[/green][/bold]\n"
+            f"[bold]3.[/bold] Run your {'flow' if step_type == 'flow' else 'crew'}: [bold][green]crewai run[/green][/bold]",
+            title="🚀 Next Steps",
+            border_style="bright_blue",
+            expand=False,
+        )
+
+    console.print("\n")
+    console.print(panel)
