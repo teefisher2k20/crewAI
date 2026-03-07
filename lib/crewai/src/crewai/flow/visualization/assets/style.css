@@ -378,6 +378,13 @@ h3 {
     position: relative;
     z-index: 10002;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0;
+    font-family: inherit;
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid #FF5A50;
+    outline-offset: 2px;
 }
 
 .nav-button:hover {
