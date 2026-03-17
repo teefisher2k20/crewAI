@@ -15,46 +15,53 @@ from typing import (
     Final,
     Literal,
     TextIO,
+    TypeVar,
     TypedDict,
     cast,
 )
 
-from dotenv import load_dotenv
-import httpx
-from pydantic import BaseModel, Field
-from typing_extensions import Self
+from dotenv import load_dotenv  # type: ignore
+import httpx  # type: ignore
+from pydantic import BaseModel, Field  # type: ignore
 
-from crewai.events.event_bus import crewai_event_bus
-from crewai.events.types.llm_events import (
+from crewai.events.event_bus import crewai_event_bus  # type: ignore
+from crewai.events.types.llm_events import (  # type: ignore
     LLMCallCompletedEvent,
     LLMCallFailedEvent,
     LLMCallStartedEvent,
     LLMCallType,
     LLMStreamChunkEvent,
 )
-from crewai.events.types.tool_usage_events import (
+from crewai.events.types.tool_usage_events import (  # type: ignore
     ToolUsageErrorEvent,
     ToolUsageFinishedEvent,
     ToolUsageStartedEvent,
 )
-from crewai.llms.base_llm import BaseLLM, get_current_call_id, llm_call_context
-from crewai.llms.constants import (
+from crewai.llms.base_llm import (  # type: ignore
+    BaseLLM,
+    get_current_call_id,
+    llm_call_context,
+)
+from crewai.llms.constants import (  # type: ignore
     ANTHROPIC_MODELS,
     AZURE_MODELS,
     BEDROCK_MODELS,
     GEMINI_MODELS,
     OPENAI_MODELS,
 )
-from crewai.utilities import InternalInstructor
-from crewai.utilities.exceptions.context_window_exceeding_exception import (
+from crewai.utilities import InternalInstructor  # type: ignore
+from crewai.utilities.exceptions.context_window_exceeding_exception import (  # type: ignore
     LLMContextLengthExceededError,
 )
-from crewai.utilities.logger_utils import suppress_warnings
-from crewai.utilities.string_utils import sanitize_tool_name
+from crewai.utilities.logger_utils import suppress_warnings  # type: ignore
+from crewai.utilities.string_utils import sanitize_tool_name  # type: ignore
 
 
 try:
-    from crewai_files import aformat_multimodal_content, format_multimodal_content
+    from crewai_files import (  # type: ignore
+        aformat_multimodal_content,
+        format_multimodal_content,
+    )
 
     HAS_CREWAI_FILES = True
 except ImportError:
@@ -62,89 +69,191 @@ except ImportError:
 
 
 if TYPE_CHECKING:
-    from litellm.exceptions import ContextWindowExceededError
-    from litellm.litellm_core_utils.get_supported_openai_params import (
-        get_supported_openai_params,
+    from litellm.exceptions import (
+        ContextWindowExceededError as LiteLLMContextWindowExceededError,  # type: ignore
     )
-    from litellm.types.utils import (
-        ChatCompletionDeltaToolCall,
-        Choices,
-        Function,
-        ModelResponse,
+    from litellm.types.utils import (  # type: ignore
+        ChatCompletionDeltaToolCall as LiteLLMChatCompletionDeltaToolCall,
+        Choices as LiteLLMChoices,
+        Function as LiteLLMFunction,
+        ModelResponse as LiteLLMModelResponse,
     )
-    from litellm.utils import supports_response_schema
 
-    from crewai.agent.core import Agent
-    from crewai.llms.hooks.base import BaseInterceptor
-    from crewai.llms.providers.anthropic.completion import AnthropicThinkingConfig
-    from crewai.task import Task
-    from crewai.tools.base_tool import BaseTool
-    from crewai.utilities.types import LLMMessage
+    from crewai.agent.core import Agent  # type: ignore
+    from crewai.llms.hooks.base import BaseInterceptor  # type: ignore
+    from crewai.llms.providers.anthropic.completion import (
+        AnthropicThinkingConfig,  # type: ignore
+    )
+    from crewai.task import Task  # type: ignore
+    from crewai.tools.base_tool import BaseTool  # type: ignore
+    from crewai.utilities.types import LLMMessage  # type: ignore
 
 try:
-    import litellm
-    from litellm.exceptions import ContextWindowExceededError
-    from litellm.integrations.custom_logger import CustomLogger
-    from litellm.litellm_core_utils.get_supported_openai_params import (
-        get_supported_openai_params,
+    import litellm  # type: ignore
+    from litellm.exceptions import (
+        ContextWindowExceededError as LiteLLMContextWindowExceededError,  # type: ignore
     )
-    from litellm.types.utils import (
-        ChatCompletionDeltaToolCall,
-        Choices,
-        Function,
-        ModelResponse,
+    from litellm.integrations.custom_logger import CustomLogger  # type: ignore
+    from litellm.litellm_core_utils.get_supported_openai_params import (  # type: ignore
+        get_supported_openai_params as _get_supported_openai_params,
     )
-    from litellm.utils import supports_response_schema
+    from litellm.types.utils import (  # type: ignore
+        ChatCompletionDeltaToolCall as _LiteLLMChatCompletionDeltaToolCall,
+        Choices as _LiteLLMChoices,
+        Function as _LiteLLMFunction,
+        ModelResponse as _LiteLLMModelResponse,
+    )
+    from litellm.utils import (
+        supports_response_schema as _supports_response_schema,
+    )  # type: ignore
 
     LITELLM_AVAILABLE = True
 except ImportError:
     LITELLM_AVAILABLE = False
     litellm = None  # type: ignore
-    Choices = None  # type: ignore
-    ContextWindowExceededError = Exception  # type: ignore
-    get_supported_openai_params = None  # type: ignore
-    ChatCompletionDeltaToolCall = None  # type: ignore
-    Function = None  # type: ignore
-    ModelResponse = None  # type: ignore
-    supports_response_schema = None  # type: ignore
+    LiteLLMContextWindowExceededError = Exception  # type: ignore
+    _get_supported_openai_params = None  # type: ignore
+    _LiteLLMChatCompletionDeltaToolCall = None  # type: ignore
+    _LiteLLMChoices = None  # type: ignore
+    _LiteLLMFunction = None  # type: ignore
+    _LiteLLMModelResponse = None  # type: ignore
+    _supports_response_schema = None  # type: ignore
     CustomLogger = None  # type: ignore
+
+if TYPE_CHECKING:
+    ChatCompletionDeltaToolCallT = LiteLLMChatCompletionDeltaToolCall
+    ChoicesT = LiteLLMChoices
+    FunctionT = LiteLLMFunction
+    ModelResponseT = LiteLLMModelResponse
+else:
+    ChatCompletionDeltaToolCallT = Any
+    ChoicesT = Any
+    FunctionT = Any
+    ModelResponseT = Any
+
+ToolCallIndex = int
+_T = TypeVar("_T")
 
 
 load_dotenv()
 logger = logging.getLogger(__name__)
 if LITELLM_AVAILABLE:
-    litellm.suppress_debug_info = True
+    cast(Any, litellm).suppress_debug_info = True
+
+
+def _require_litellm() -> Any:
+    if litellm is None:
+        raise ImportError("LiteLLM is required for this operation")
+    return litellm
+
+
+def _require_supported_openai_params() -> Callable[..., Any]:
+    if _get_supported_openai_params is None:
+        raise ImportError("LiteLLM support helpers are unavailable")
+    return _get_supported_openai_params
+
+
+def _require_supports_response_schema() -> Callable[..., bool]:
+    if _supports_response_schema is None:
+        raise ImportError("LiteLLM response schema support is unavailable")
+    return _supports_response_schema
+
+
+def _require_context_window_error() -> type[Exception]:
+    return cast(type[Exception], LiteLLMContextWindowExceededError)
+
+
+def _coerce_usage_info(value: Any) -> dict[str, Any] | None:
+    if isinstance(value, dict):
+        return cast(dict[str, Any], value)
+    if value is None or isinstance(value, type):
+        return None
+    if hasattr(value, "model_dump"):
+        dumped = value.model_dump()
+        if isinstance(dumped, dict):
+            return cast(dict[str, Any], dumped)
+    if hasattr(value, "to_dict"):
+        dumped = value.to_dict()
+        if isinstance(dumped, dict):
+            return cast(dict[str, Any], dumped)
+    return None
+
+
+def _safe_getattr(value: Any, attr: str) -> Any:
+    if value is None:
+        return None
+    return getattr(value, attr, None)
+
+
+def _tool_call_index(tool_call: Any) -> ToolCallIndex | None:
+    index = tool_call.get("index") if isinstance(tool_call, dict) else _safe_getattr(tool_call, "index")
+    return index if isinstance(index, int) else None
+
+
+def _tool_call_function(tool_call: Any) -> Any:
+    if isinstance(tool_call, dict):
+        return tool_call.get("function")
+    return _safe_getattr(tool_call, "function")
+
+
+def _tool_function_name(tool_call: Any) -> str:
+    function = _tool_call_function(tool_call)
+    if isinstance(function, dict):
+        name = function.get("name")
+    else:
+        name = _safe_getattr(function, "name")
+    return name if isinstance(name, str) else ""
+
+
+def _tool_function_arguments(tool_call: Any) -> str:
+    function = _tool_call_function(tool_call)
+    if isinstance(function, dict):
+        arguments = function.get("arguments")
+    else:
+        arguments = _safe_getattr(function, "arguments")
+    return arguments if isinstance(arguments, str) else ""
+
+
+def _tool_call_dict(tool_call: Any) -> dict[str, Any]:
+    if isinstance(tool_call, dict):
+        return cast(dict[str, Any], tool_call)
+    to_dict = _safe_getattr(tool_call, "to_dict")
+    if callable(to_dict):
+        dumped = to_dict()
+        if isinstance(dumped, dict):
+            return cast(dict[str, Any], dumped)
+    return {
+        "index": _tool_call_index(tool_call),
+        "function": {
+            "name": _tool_function_name(tool_call),
+            "arguments": _tool_function_arguments(tool_call),
+        },
+    }
 
 
 class FilteredStream(io.TextIOBase):
-    _lock = None
-
     def __init__(self, original_stream: TextIO):
         self._original_stream = original_stream
         self._lock = threading.Lock()
 
     def write(self, s: str) -> int:
-        if not self._lock:
-            self._lock = threading.Lock()
-
         with self._lock:
-            lower_s = s.lower()
-
-            # Skip common noisy LiteLLM banners and any other lines that contain "litellm"
-            if (
-                "litellm.info:" in lower_s
-                or "Consider using a smaller input or implementing a text splitting strategy"
-                in lower_s
-            ):
-                return 0
+            # Quick check for presence of potentially filtered keywords
+            if "litellm" in s or "Consider" in s or "info:" in s:
+                lower_s = s.lower()
+                if (
+                    "litellm.info:" in lower_s
+                    or "consider using a smaller input or implementing a "
+                    "text splitting strategy" in lower_s
+                ):
+                    return 0
 
             return self._original_stream.write(s)
 
     def flush(self) -> None:
-        if self._lock:
-            with self._lock:
-                return self._original_stream.flush()
-        return None
+        with self._lock:
+            self._original_stream.flush()
+        return
 
     def __getattr__(self, name: str) -> Any:
         """Delegate attribute access to the wrapped original stream.
@@ -173,9 +282,10 @@ class FilteredStream(io.TextIOBase):
         return True
 
 
-# Apply the filtered stream globally so that any subsequent writes containing the filtered
-# keywords (e.g., "litellm") are hidden from terminal output. We guard against double
-# wrapping to ensure idempotency in environments where this module might be reloaded.
+# Apply the filtered stream globally so that any subsequent writes containing
+# the filtered keywords (e.g., "litellm") are hidden from terminal output.
+# We guard against double wrapping to ensure idempotency in environments
+# where this module might be reloaded.
 if not isinstance(sys.stdout, FilteredStream):
     sys.stdout = FilteredStream(sys.stdout)
 if not isinstance(sys.stderr, FilteredStream):
@@ -409,8 +519,12 @@ class LLM(BaseLLM):
                 # Remove 'provider' from kwargs if it exists to avoid duplicate keyword argument
                 kwargs_copy = {k: v for k, v in kwargs.items() if k != "provider"}
                 return cast(
-                    Self,
-                    native_class(model=model_string, provider=provider, **kwargs_copy),
+                    "LLM",
+                    native_class(
+                        model=model_string,
+                        provider=provider,
+                        **kwargs_copy,
+                    ),
                 )
             except NotImplementedError:
                 raise
@@ -436,8 +550,7 @@ class LLM(BaseLLM):
             logger.error(error_msg)
             raise ImportError(error_msg) from None
 
-        instance = object.__new__(cls)
-        super(LLM, instance).__init__(model=model, is_litellm=True, **kwargs)
+        instance = cast("LLM", super().__new__(cls))
         instance.is_litellm = True
         return instance
 
@@ -556,29 +669,37 @@ class LLM(BaseLLM):
     def _get_native_provider(cls, provider: str) -> type | None:
         """Get native provider class if available."""
         if provider == "openai":
-            from crewai.llms.providers.openai.completion import OpenAICompletion
+            from crewai.llms.providers.openai.completion import (
+                OpenAICompletion,  # type: ignore
+            )
 
             return OpenAICompletion
 
         if provider == "anthropic" or provider == "claude":
-            from crewai.llms.providers.anthropic.completion import (
+            from crewai.llms.providers.anthropic.completion import (  # type: ignore
                 AnthropicCompletion,
             )
 
             return AnthropicCompletion
 
         if provider == "azure" or provider == "azure_openai":
-            from crewai.llms.providers.azure.completion import AzureCompletion
+            from crewai.llms.providers.azure.completion import (
+                AzureCompletion,  # type: ignore
+            )
 
             return AzureCompletion
 
         if provider == "google" or provider == "gemini":
-            from crewai.llms.providers.gemini.completion import GeminiCompletion
+            from crewai.llms.providers.gemini.completion import (
+                GeminiCompletion,  # type: ignore
+            )
 
             return GeminiCompletion
 
         if provider == "bedrock":
-            from crewai.llms.providers.bedrock.completion import BedrockCompletion
+            from crewai.llms.providers.bedrock.completion import (
+                BedrockCompletion,  # type: ignore
+            )
 
             return BedrockCompletion
 
@@ -618,7 +739,7 @@ class LLM(BaseLLM):
         Note: This __init__ method is only called for fallback instances.
         Native provider instances handle their own initialization in their respective classes.
         """
-        super().__init__(
+        super().__init__(  # type: ignore
             model=model,
             temperature=temperature,
             api_key=api_key,
@@ -655,7 +776,8 @@ class LLM(BaseLLM):
         self.stream = stream
         self.interceptor = interceptor
 
-        litellm.drop_params = True
+        if LITELLM_AVAILABLE:
+            _require_litellm().drop_params = True
 
         # Normalize self.stop to always be a list[str]
         if stop is None:
@@ -761,12 +883,12 @@ class LLM(BaseLLM):
             Exception: If no content is received from the streaming response
         """
         # --- 1) Initialize response tracking
-        full_response = ""
+        full_response: str = ""
         last_chunk = None
         chunk_count = 0
         usage_info = None
 
-        accumulated_tool_args: defaultdict[int, AccumulatedToolArgs] = defaultdict(
+        accumulated_tool_args: defaultdict[int, AccumulatedToolArgs] = defaultdict(  # type: ignore
             AccumulatedToolArgs
         )
 
@@ -776,16 +898,16 @@ class LLM(BaseLLM):
 
         try:
             # --- 3) Process each chunk in the stream
-            for chunk in litellm.completion(**params):
+            for chunk in _require_litellm().completion(**params):
                 chunk_count += 1
                 last_chunk = chunk
 
                 # Extract content from the chunk
-                chunk_content = None
+                chunk_content: str | None = None
                 response_id = None
 
                 if hasattr(chunk, "id"):
-                    response_id = chunk.id
+                    response_id = chunk.id  # type: ignore
 
                 # Safely extract content from various chunk formats
                 try:
@@ -802,9 +924,7 @@ class LLM(BaseLLM):
                     if isinstance(chunk, dict) and "usage" in chunk:
                         usage_info = chunk["usage"]
                     elif hasattr(chunk, "usage"):
-                        # Check if usage is not a type but an actual attribute with value
-                        if not isinstance(chunk.usage, type):
-                            usage_info = chunk.usage
+                        usage_info = _coerce_usage_info(chunk.usage)
 
                     if choices and len(choices) > 0:
                         choice = choices[0]
@@ -870,7 +990,8 @@ class LLM(BaseLLM):
             # --- 4) Fallback to non-streaming if no content received
             if not full_response.strip() and chunk_count == 0:
                 logging.warning(
-                    "No chunks received in streaming response, falling back to non-streaming"
+                    "No chunks received in streaming response, "
+                    "falling back to non-streaming"
                 )
                 non_streaming_params = params.copy()
                 non_streaming_params["stream"] = False
@@ -1009,7 +1130,7 @@ class LLM(BaseLLM):
             )
             return full_response
 
-        except ContextWindowExceededError as e:
+        except _require_context_window_error() as e:
             # Catch context window errors from litellm and convert them to our own exception type.
             # This exception is handled by CrewAgentExecutor._invoke_loop() which can then
             # decide whether to summarize the content or abort based on the respect_context_window flag.
@@ -1040,29 +1161,32 @@ class LLM(BaseLLM):
 
     def _handle_streaming_tool_calls(
         self,
-        tool_calls: list[ChatCompletionDeltaToolCall],
-        accumulated_tool_args: defaultdict[int, AccumulatedToolArgs],
+        tool_calls: list[Any],
+        accumulated_tool_args: defaultdict[ToolCallIndex, AccumulatedToolArgs],
         available_functions: dict[str, Any] | None = None,
         from_task: Task | None = None,
         from_agent: Agent | None = None,
         response_id: str | None = None,
     ) -> Any:
         for tool_call in tool_calls:
-            current_tool_accumulator = accumulated_tool_args[tool_call.index]
+            index = _tool_call_index(tool_call)
+            if index is None:
+                continue
+            current_tool_accumulator = accumulated_tool_args[index]
 
-            if tool_call.function.name:
-                current_tool_accumulator.function.name = tool_call.function.name
+            tool_name = _tool_function_name(tool_call)
+            if tool_name:
+                current_tool_accumulator.function.name = tool_name
 
-            if tool_call.function.arguments:
-                current_tool_accumulator.function.arguments += (
-                    tool_call.function.arguments
-                )
+            tool_arguments = _tool_function_arguments(tool_call)
+            if tool_arguments:
+                current_tool_accumulator.function.arguments += tool_arguments # type: ignore
 
             crewai_event_bus.emit(
                 self,
                 event=LLMStreamChunkEvent(
-                    tool_call=tool_call.to_dict(),
-                    chunk=tool_call.function.arguments,
+                    tool_call=_tool_call_dict(tool_call),
+                    chunk=tool_arguments,
                     from_task=from_task,
                     from_agent=from_agent,
                     call_type=LLMCallType.TOOL_CALL,
@@ -1114,8 +1238,7 @@ class LLM(BaseLLM):
                                 ):
                                     usage_info = last_chunk["usage"]
                                 elif hasattr(last_chunk, "usage"):
-                                    if not isinstance(last_chunk.usage, type):
-                                        usage_info = last_chunk.usage
+                                    usage_info = _coerce_usage_info(last_chunk.usage)
                         except Exception as e:
                             logging.debug(f"Error extracting usage info: {e}")
 
@@ -1185,17 +1308,17 @@ class LLM(BaseLLM):
             # length issues appropriately.
             if response_model:
                 params["response_model"] = response_model
-            response = litellm.completion(**params)
+            response = _require_litellm().completion(**params)
 
             if (
                 hasattr(response, "usage")
                 and not isinstance(response.usage, type)
                 and response.usage
             ):
-                usage_info = response.usage
+                usage_info = _coerce_usage_info(response.usage)
                 self._track_token_usage_internal(usage_info)
 
-        except ContextWindowExceededError as e:
+        except _require_context_window_error() as e:
             # Convert litellm's context window error to our own exception type
             # for consistent handling in the rest of the codebase
             raise LLMContextLengthExceededError(str(e)) from e
@@ -1215,7 +1338,7 @@ class LLM(BaseLLM):
                 return structured_response
 
         # --- 3) Extract response message and content (standard response)
-        response_message = cast(Choices, cast(ModelResponse, response).choices)[
+        response_message = cast(ChoicesT, cast(ModelResponseT, response).choices)[
             0
         ].message
         text_response = response_message.content or ""
@@ -1223,7 +1346,7 @@ class LLM(BaseLLM):
         if callbacks and len(callbacks) > 0:
             for callback in callbacks:
                 if hasattr(callback, "log_success_event"):
-                    usage_info = getattr(response, "usage", None)
+                    usage_info = _coerce_usage_info(getattr(response, "usage", None))
                     if usage_info:
                         callback.log_success_event(
                             kwargs=params,
@@ -1320,17 +1443,17 @@ class LLM(BaseLLM):
         try:
             if response_model:
                 params["response_model"] = response_model
-            response = await litellm.acompletion(**params)
+            response = await _require_litellm().acompletion(**params)
 
             if (
                 hasattr(response, "usage")
                 and not isinstance(response.usage, type)
                 and response.usage
             ):
-                usage_info = response.usage
+                usage_info = _coerce_usage_info(response.usage)
                 self._track_token_usage_internal(usage_info)
 
-        except ContextWindowExceededError as e:
+        except _require_context_window_error() as e:
             raise LLMContextLengthExceededError(str(e)) from e
 
         if response_model is not None:
@@ -1345,7 +1468,7 @@ class LLM(BaseLLM):
                 )
                 return structured_response
 
-        response_message = cast(Choices, cast(ModelResponse, response).choices)[
+        response_message = cast(ChoicesT, cast(ModelResponseT, response).choices)[
             0
         ].message
         text_response = response_message.content or ""
@@ -1353,7 +1476,7 @@ class LLM(BaseLLM):
         if callbacks and len(callbacks) > 0:
             for callback in callbacks:
                 if hasattr(callback, "log_success_event"):
-                    usage_info = getattr(response, "usage", None)
+                    usage_info = _coerce_usage_info(getattr(response, "usage", None))
                     if usage_info:
                         callback.log_success_event(
                             kwargs=params,
@@ -1418,12 +1541,12 @@ class LLM(BaseLLM):
         Returns:
             str: The complete response text
         """
-        full_response = ""
+        full_response: str = ""
         chunk_count = 0
 
         usage_info = None
 
-        accumulated_tool_args: defaultdict[int, AccumulatedToolArgs] = defaultdict(
+        accumulated_tool_args: defaultdict[int, AccumulatedToolArgs] = defaultdict(  # type: ignore
             AccumulatedToolArgs
         )
 
@@ -1432,10 +1555,10 @@ class LLM(BaseLLM):
         response_id = None
 
         try:
-            async for chunk in await litellm.acompletion(**params):
+            async for chunk in await _require_litellm().acompletion(**params):
                 chunk_count += 1
                 chunk_content = None
-                response_id = chunk.id if hasattr(chunk, "id") else None
+                response_id = chunk.id  # type: ignore if hasattr(chunk, "id") else None
 
                 try:
                     choices = None
@@ -1446,7 +1569,7 @@ class LLM(BaseLLM):
                             choices = chunk.choices
 
                     if hasattr(chunk, "usage") and chunk.usage is not None:
-                        usage_info = chunk.usage
+                        usage_info = _coerce_usage_info(chunk.usage)
 
                     if choices and len(choices) > 0:
                         first_choice = choices[0]
@@ -1463,7 +1586,7 @@ class LLM(BaseLLM):
                             elif hasattr(delta, "content"):
                                 chunk_content = delta.content
 
-                            tool_calls: list[ChatCompletionDeltaToolCall] | None = None
+                            tool_calls: list[ChatCompletionDeltaToolCallT] | None = None
                             if isinstance(delta, dict):
                                 tool_calls = delta.get("tool_calls")
                             elif hasattr(delta, "tool_calls"):
@@ -1471,18 +1594,21 @@ class LLM(BaseLLM):
 
                             if tool_calls:
                                 for tool_call in tool_calls:
-                                    idx = tool_call.index
-                                    if tool_call.function:
-                                        if tool_call.function.name:
-                                            accumulated_tool_args[
-                                                idx
-                                            ].function.name = tool_call.function.name
-                                        if tool_call.function.arguments:
-                                            accumulated_tool_args[
-                                                idx
-                                            ].function.arguments += (
-                                                tool_call.function.arguments
-                                            )
+                                    idx = _tool_call_index(tool_call)
+                                    if idx is None:
+                                        continue
+                                    tool_name = _tool_function_name(tool_call)
+                                    tool_arguments = _tool_function_arguments(
+                                        tool_call
+                                    )
+                                    if tool_name:
+                                        accumulated_tool_args[
+                                            idx
+                                        ].function.name = tool_name
+                                    if tool_arguments:
+                                        accumulated_tool_args[
+                                            idx
+                                        ].function.arguments += tool_arguments
 
                 except (AttributeError, KeyError, IndexError, TypeError):
                     pass
@@ -1515,14 +1641,14 @@ class LLM(BaseLLM):
 
             if accumulated_tool_args and available_functions:
                 # Convert accumulated tool args to ChatCompletionDeltaToolCall objects
-                tool_calls_list: list[ChatCompletionDeltaToolCall] = [
-                    ChatCompletionDeltaToolCall(
-                        index=idx,
-                        function=Function(
-                            name=tool_arg.function.name,
-                            arguments=tool_arg.function.arguments,
-                        ),
-                    )
+                tool_calls_list: list[dict[str, Any]] = [
+                    {
+                        "index": idx,
+                        "function": {
+                            "name": tool_arg.function.name,
+                            "arguments": tool_arg.function.arguments,
+                        },
+                    }
                     for idx, tool_arg in accumulated_tool_args.items()
                     if tool_arg.function.name
                 ]
@@ -1548,7 +1674,7 @@ class LLM(BaseLLM):
             )
             return full_response
 
-        except ContextWindowExceededError as e:
+        except _require_context_window_error() as e:
             raise LLMContextLengthExceededError(str(e)) from e
         except Exception:
             if chunk_count == 0:
@@ -1588,14 +1714,14 @@ class LLM(BaseLLM):
 
         # --- 2) Extract function name from first tool call
         tool_call = tool_calls[0]
-        function_name = sanitize_tool_name(tool_call.function.name)
+        function_name = sanitize_tool_name(_tool_function_name(tool_call))
         function_args = {}  # Initialize to empty dict to avoid unbound variable
 
         # --- 3) Check if function is available
         if function_name in available_functions:
             try:
                 # --- 3.1) Parse function arguments
-                function_args = json.loads(tool_call.function.arguments)
+                function_args = json.loads(_tool_function_arguments(tool_call))
                 fn = available_functions[function_name]
 
                 started_at = datetime.now()
@@ -2141,7 +2267,7 @@ class LLM(BaseLLM):
           - If no slash is present, "openai" is assumed.
         """
         provider = self._get_custom_llm_provider()
-        if self.response_format is not None and not supports_response_schema(
+        if self.response_format is not None and not _require_supports_response_schema()(
             model=self.model,
             custom_llm_provider=provider,
         ):
@@ -2153,7 +2279,7 @@ class LLM(BaseLLM):
     def supports_function_calling(self) -> bool:
         try:
             provider = self._get_custom_llm_provider()
-            return litellm.utils.supports_function_calling(
+            return _require_litellm().utils.supports_function_calling(
                 self.model, custom_llm_provider=provider
             )
         except Exception as e:
@@ -2162,7 +2288,7 @@ class LLM(BaseLLM):
 
     def supports_stop_words(self) -> bool:
         try:
-            params = get_supported_openai_params(model=self.model)
+            params = _require_supported_openai_params()(model=self.model)
             return params is not None and "stop" in params
         except Exception as e:
             logging.error(f"Failed to get supported params: {e!s}")
@@ -2205,15 +2331,16 @@ class LLM(BaseLLM):
         """
         with suppress_warnings():
             callback_types = [type(callback) for callback in callbacks]
-            for callback in litellm.success_callback[:]:
+            llm_module = _require_litellm()
+            for callback in llm_module.success_callback[:]:
                 if type(callback) in callback_types:
-                    litellm.success_callback.remove(callback)
+                    llm_module.success_callback.remove(callback)
 
-            for callback in litellm._async_success_callback[:]:
+            for callback in llm_module._async_success_callback[:]:
                 if type(callback) in callback_types:
-                    litellm._async_success_callback.remove(callback)
+                    llm_module._async_success_callback.remove(callback)
 
-            litellm.callbacks = callbacks
+            llm_module.callbacks = callbacks
 
     @staticmethod
     def set_env_callbacks() -> None:
@@ -2248,8 +2375,9 @@ class LLM(BaseLLM):
                     cb.strip() for cb in failure_callbacks_str.split(",") if cb.strip()
                 ]
 
-                litellm.success_callback = success_callbacks
-                litellm.failure_callback = failure_callbacks
+                llm_module = _require_litellm()
+                llm_module.success_callback = success_callbacks
+                llm_module.failure_callback = failure_callbacks
 
     def __copy__(self) -> LLM:
         """Create a shallow copy of the LLM instance."""

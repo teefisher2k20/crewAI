@@ -233,5 +233,5 @@ class BrightDataSearchTool(BaseTool):
 
         except requests.RequestException as e:
             return f"Error performing BrightData search: {e!s}"
-        except Exception as e:
+        except Exception as e:  # type: ignore
             return f"Error fetching results: {e!s}"

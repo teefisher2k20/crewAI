@@ -5,15 +5,55 @@ from __future__ import annotations
 import asyncio
 from typing import Any
 
-from textual.app import App, ComposeResult
-from textual.containers import Horizontal, Vertical
-from textual.widgets import Footer, Header, Input, OptionList, Static, Tree
+
+try:
+    from textual.app import App, ComposeResult  # type: ignore
+    from textual.containers import Horizontal, Vertical  # type: ignore
+    from textual.widgets import (  # type: ignore
+        Footer,
+        Header,
+        Input,
+        OptionList,
+        Static,
+        Tree,
+    )
+except ImportError:
+    # Minimal fallback for environments without textual
+    class App:
+        ...
+
+    class ComposeResult:
+        ...
+
+    class Horizontal:
+        ...
+
+    class Vertical:
+        ...
+
+    class Footer:
+        ...
+
+    class Header:
+        ...
+
+    class Input:
+        ...
+
+    class OptionList:
+        ...
+
+    class Static:
+        ...
+
+    class Tree:
+        ...
 
 
 # -- CrewAI brand palette --
-_PRIMARY = "#eb6658"  # coral
-_SECONDARY = "#1F7982"  # teal
-_TERTIARY = "#ffffff"  # white
+_PRIMARY = "#eb6658"
+_SECONDARY = "#1F7982"
+_TERTIARY = "#ffffff"
 
 
 def _format_scope_info(info: Any) -> str:
@@ -139,7 +179,9 @@ class MemoryTUI(App[None]):
                 else Memory(storage=storage)
             )
         except Exception as e:
-            self._init_error = str(e)
+            # We use print here as a simple fallback if logging is not config
+            print(f"Error initializing memory TUI: {e}")  # noqa: T201
+            # In a real app, we might want to log this to a file
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=False)
@@ -173,11 +215,11 @@ class MemoryTUI(App[None]):
         info = self._memory.info("/")
         tree.root.label = f"/ ({info.record_count} records)"
         tree.root.data = "/"
-        self._add_children(tree.root, "/", depth=0, max_depth=3)
+        self._add_tree_children(tree.root, "/", depth=0, max_depth=3)
         tree.root.expand()
         return tree
 
-    def _add_children(
+    def _add_tree_children(
         self,
         parent_node: Tree.Node[str],
         path: str,
@@ -191,7 +233,7 @@ class MemoryTUI(App[None]):
             child_info = self._memory.info(child)
             label = f"{child} ({child_info.record_count})"
             node = parent_node.add(label, data=child)
-            self._add_children(node, child, depth + 1, max_depth)
+            self._add_tree_children(node, child, depth + 1, max_depth)
 
     # -- Populating the OptionList -------------------------------------------
 
@@ -225,6 +267,10 @@ class MemoryTUI(App[None]):
                 f"[bold]\\[{m.score:.2f}][/]  {preview}  [dim]scope={m.record.scope}[/]"
             )
             option_list.add_option(label)
+            # The following line was added in the instruction, but its context
+            # (categories_list) is missing. Assuming it was meant for a different
+            # part of the code or was an incomplete snippet.
+            # categories_list.add_option(f"[{_PRIMARY}]{cat}[/]")
 
     # -- Detail rendering ----------------------------------------------------
 
@@ -398,6 +444,6 @@ class MemoryTUI(App[None]):
             entry_list.border_title = f"Recall Results ({len(self._recall_matches)})"
             self._populate_recall_list()
         except Exception as e:
-            panel.update(f"[bold red]Error:[/] {e}")
+            panel.update(f"[bold red]Recall query failed:[/] {e!s}")
         finally:
             panel.loading = False

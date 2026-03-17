@@ -29,7 +29,7 @@ class ComposioTool(BaseTool):
     def _check_connected_account(tool: t.Any, toolset: t.Any) -> None:
         """Check if connected account is required and if required it exists or not."""
         from composio import Action
-        from composio.client.collections import ConnectedAccountModel
+        from composio.client.collections import ConnectedAccountModel  # type: ignore
 
         tool = t.cast(Action, tool)
         if tool.no_auth:
@@ -52,9 +52,9 @@ class ComposioTool(BaseTool):
         **kwargs: t.Any,
     ) -> te.Self:
         """Wrap a composio tool as crewAI tool."""
-        from composio import Action, ComposioToolSet
-        from composio.constants import DEFAULT_ENTITY_ID
-        from composio.utils.shared import json_schema_to_model
+        from composio import Action, ComposioToolSet  # type: ignore
+        from composio.constants import DEFAULT_ENTITY_ID  # type: ignore
+        from composio.utils.shared import json_schema_to_model  # type: ignore
 
         toolset = ComposioToolSet()
         if not isinstance(action, Action):

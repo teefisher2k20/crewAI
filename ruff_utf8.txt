@@ -1,0 +1,162 @@
+﻿T201 `print` found
+  --> fix_nosonar.py:22:1
+   |
+20 |         f.write(content)
+21 |
+22 | print('Done fixing NOSONAR tags.')
+   | ^^^^^
+   |
+help: Remove `print`
+
+T201 `print` found
+  --> fix_tsx.py:39:1
+   |
+37 |         f.write('\n'.join(lines))
+38 |
+39 | print('Done fixing TSX files.')
+   | ^^^^^
+   |
+help: Remove `print`
+
+F821 Undefined name `data_format`
+  --> lib\crewai-tools\src\crewai_tools\tools\brightdata_tool\brightdata_unlocker.py:93:28
+   |
+91 |         self.url = url
+92 |         self.format = format
+93 |         self.data_format = data_format
+   |                            ^^^^^^^^^^^
+94 |
+95 |         self.api_key = os.getenv("BRIGHT_DATA_API_KEY") or ""
+   |
+
+F823 Local variable `BaseLLM` referenced before assignment
+    --> lib\crewai\src\crewai\agent\core.py:1102:37
+     |
+1100 |         )
+1101 |         rewriter_prompt = self.i18n.slice("knowledge_search_query_system_prompt")
+1102 |         if not isinstance(self.llm, BaseLLM):
+     |                                     ^^^^^^^
+1103 |             self._logger.log(
+1104 |                 "warning",
+     |
+
+T201 `print` found
+   --> lib\crewai\src\crewai\cli\memory_tui.py:183:13
+    |
+181 |         except Exception as e:
+182 |             # We use print here as a simple fallback if logging is not config
+183 |             print(f"Error initializing memory TUI: {e}")
+    |             ^^^^^
+184 |             # In a real app, we might want to log this to a file
+    |
+help: Remove `print`
+
+invalid-syntax: Expected one or more symbol names after import
+  --> lib\crewai\src\crewai\crew.py:69:84
+   |
+67 |     TraceCollectionListener,
+68 | )
+69 | from crewai.events.listeners.tracing.utils import  # type: ignore (  # type: ignore
+   |                                                                                    ^
+70 |     set_tracing_enabled,
+71 |     should_enable_tracing,
+   |
+
+invalid-syntax: Unexpected indentation
+  --> lib\crewai\src\crewai\crew.py:70:1
+   |
+68 | )
+69 | from crewai.events.listeners.tracing.utils import  # type: ignore (  # type: ignore
+70 |     set_tracing_enabled,
+   | ^^^^
+71 |     should_enable_tracing,
+72 | )
+   |
+
+invalid-syntax: Expected a statement
+  --> lib\crewai\src\crewai\crew.py:72:1
+   |
+70 |     set_tracing_enabled,
+71 |     should_enable_tracing,
+72 | )
+   | ^
+73 | from crewai.events.types.crew_events import (  # type: ignore
+74 |     CrewKickoffCompletedEvent,
+   |
+
+invalid-syntax: Expected a statement
+  --> lib\crewai\src\crewai\crew.py:72:2
+   |
+70 |     set_tracing_enabled,
+71 |     should_enable_tracing,
+72 | )
+   |  ^
+73 | from crewai.events.types.crew_events import (  # type: ignore
+74 |     CrewKickoffCompletedEvent,
+   |
+
+invalid-syntax: Expected one or more symbol names after import
+    --> lib\crewai\src\crewai\crew.py:2022:76
+     |
+2020 |     def _show_tracing_disabled_message() -> None:
+2021 |         """Show a message when tracing is disabled."""
+2022 |         from crewai.events.listeners.tracing.utils import  # type: ignore (
+     |                                                                            ^
+2023 |             has_user_declined_tracing,
+2024 |             should_suppress_tracing_messages,
+     |
+
+invalid-syntax: Unexpected indentation
+    --> lib\crewai\src\crewai\crew.py:2023:1
+     |
+2021 |         """Show a message when tracing is disabled."""
+2022 |         from crewai.events.listeners.tracing.utils import  # type: ignore (
+2023 |             has_user_declined_tracing,
+     | ^^^^^^^^^^^^
+2024 |             should_suppress_tracing_messages,
+2025 |         )
+     |
+
+invalid-syntax: Expected a statement
+    --> lib\crewai\src\crewai\crew.py:2025:9
+     |
+2023 |             has_user_declined_tracing,
+2024 |             should_suppress_tracing_messages,
+2025 |         )
+     |         ^
+2026 |
+2027 |         if should_suppress_tracing_messages():
+     |
+
+invalid-syntax: Expected a statement
+    --> lib\crewai\src\crewai\crew.py:2025:10
+     |
+2023 |             has_user_declined_tracing,
+2024 |             should_suppress_tracing_messages,
+2025 |         )
+     |          ^
+2026 |
+2027 |         if should_suppress_tracing_messages():
+     |
+
+invalid-syntax: Expected a statement
+    --> lib\crewai\src\crewai\crew.py:2054:1
+     |
+2052 |         )
+2053 |         console.print(panel)
+     |                             ^
+     |
+
+F821 Undefined name `ChatCompletionDeltaToolCall`
+    --> lib\crewai\src\crewai\llm.py:1589:46
+     |
+1587 |                                 chunk_content = delta.content
+1588 |
+1589 |                             tool_calls: list[ChatCompletionDeltaToolCall] | None = None
+     |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1590 |                             if isinstance(delta, dict):
+1591 |                                 tool_calls = delta.get("tool_calls")
+     |
+
+Found 15 errors.
+No fixes available (3 hidden fixes can be enabled with the `--unsafe-fixes` option).

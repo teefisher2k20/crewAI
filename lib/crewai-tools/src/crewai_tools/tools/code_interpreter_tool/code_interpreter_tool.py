@@ -321,7 +321,7 @@ class CodeInterpreterTool(BaseTool):
         """
         if self._check_docker_available():
             return self.run_code_in_docker(code, libraries_used)
-        
+
         error_msg = (
             "Docker is required for safe code execution but is not available. "
             "The restricted sandbox fallback has been removed due to security vulnerabilities "

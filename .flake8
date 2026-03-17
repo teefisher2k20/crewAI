@@ -1,0 +1,13 @@
+[flake8]
+# Ignore E501 (line too long) to match ruff configuration
+# Ignore W503 (line break before binary operator) - PEP8 now recommends breaking before
+# Ignore E203 (whitespace before ':') - incompatible with black/modern formatting
+ignore = E501, W503, E203
+max-line-length = 88
+exclude = 
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .venv,
+    lib/crewai/src/crewai/cli/templates

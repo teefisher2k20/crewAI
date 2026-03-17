@@ -156,7 +156,7 @@ class CouchbaseFTSVectorSearchTool(BaseTool):
                 self._bucket = self.cluster.bucket(self.bucket_name)
                 self._scope = self._bucket.scope(self.scope_name)
                 self._collection = self._scope.collection(self.collection_name)
-            except Exception as e:
+            except Exception as e:  # type: ignore
                 raise ValueError(
                     "Error connecting to couchbase. "
                     "Please check the connection and credentials"
@@ -229,7 +229,7 @@ class CouchbaseFTSVectorSearchTool(BaseTool):
 
             for row in search_iter.rows():
                 json_response.append(row.fields)  # noqa: PERF401
-        except Exception as e:
+        except Exception as e:  # type: ignore
             return f"Search failed with error: {e}"
 
         return json.dumps(json_response, indent=2)

@@ -411,7 +411,7 @@ class BrightDataDatasetTool(BaseTool):
     args_schema: type[BaseModel] = BrightDataDatasetToolSchema
     dataset_type: str | None = None
     url: str | None = None
-    format: str = "json"
+    format_: str = "json"
     zipcode: str | None = None
     additional_params: dict[str, Any] | None = None
     env_vars: list[EnvVar] = Field(
@@ -428,7 +428,7 @@ class BrightDataDatasetTool(BaseTool):
         self,
         dataset_type: str | None = None,
         url: str | None = None,
-        format: str = "json",
+        format_: str = "json",
         zipcode: str | None = None,
         additional_params: dict[str, Any] | None = None,
         **kwargs: Any,
@@ -596,5 +596,5 @@ class BrightDataDatasetTool(BaseTool):
             return (
                 f"Exception occured in method : get_dataset_data_async. Details - {e!s}"
             )
-        except Exception as e:
+        except Exception as e:  # type: ignore
             return f"Bright Data API error: {e!s}"

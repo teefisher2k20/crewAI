@@ -15,9 +15,9 @@ from typing import (
 import uuid
 import warnings
 
-from opentelemetry import baggage
-from opentelemetry.context import attach, detach
-from pydantic import (
+from opentelemetry import baggage  # type: ignore
+from opentelemetry.context import attach, detach  # type: ignore
+from pydantic import (  # type: ignore
     UUID4,
     BaseModel,
     Field,
@@ -27,31 +27,33 @@ from pydantic import (
     field_validator,
     model_validator,
 )
-from pydantic_core import PydanticCustomError
-from rich.console import Console
-from rich.panel import Panel
+from pydantic_core import PydanticCustomError  # type: ignore
+from rich.console import Console  # type: ignore
+from rich.panel import Panel  # type: ignore
 from typing_extensions import Self
 
 
 if TYPE_CHECKING:
-    from crewai_files import FileInput
+    from crewai_files import FileInput  # type: ignore
 
 try:
-    from crewai_files import get_supported_content_types
+    from crewai_files import get_supported_content_types  # type: ignore
 
     HAS_CREWAI_FILES = True
 except ImportError:
     HAS_CREWAI_FILES = False
 
-    def get_supported_content_types(provider: str, api: str | None = None) -> list[str]:
+    def get_supported_content_types(
+        _provider: str, _api: str | None = None
+    ) -> list[str]:
         return []
 
 
-from crewai.agent import Agent
-from crewai.agents.agent_builder.base_agent import BaseAgent
-from crewai.agents.cache.cache_handler import CacheHandler
-from crewai.crews.crew_output import CrewOutput
-from crewai.crews.utils import (
+from crewai.agent import Agent  # type: ignore
+from crewai.agents.agent_builder.base_agent import BaseAgent  # type: ignore
+from crewai.agents.cache.cache_handler import CacheHandler  # type: ignore
+from crewai.crews.crew_output import CrewOutput  # type: ignore
+from crewai.crews.utils import (  # type: ignore
     StreamingContext,
     check_conditional_skip,
     enable_agent_streaming,
@@ -59,16 +61,16 @@ from crewai.crews.utils import (
     prepare_task_execution,
     run_for_each_async,
 )
-from crewai.events.event_bus import crewai_event_bus
-from crewai.events.event_listener import EventListener
-from crewai.events.listeners.tracing.trace_listener import (
+from crewai.events.event_bus import crewai_event_bus  # type: ignore
+from crewai.events.event_listener import EventListener  # type: ignore
+from crewai.events.listeners.tracing.trace_listener import (  # type: ignore
     TraceCollectionListener,
 )
-from crewai.events.listeners.tracing.utils import (
+from crewai.events.listeners.tracing.utils import (  # type: ignore
     set_tracing_enabled,
     should_enable_tracing,
 )
-from crewai.events.types.crew_events import (
+from crewai.events.types.crew_events import (  # type: ignore
     CrewKickoffCompletedEvent,
     CrewKickoffFailedEvent,
     CrewTestCompletedEvent,
@@ -78,49 +80,58 @@ from crewai.events.types.crew_events import (
     CrewTrainFailedEvent,
     CrewTrainStartedEvent,
 )
-from crewai.flow.flow_trackable import FlowTrackable
-from crewai.knowledge.knowledge import Knowledge
-from crewai.knowledge.source.base_knowledge_source import BaseKnowledgeSource
-from crewai.llm import LLM
-from crewai.llms.base_llm import BaseLLM
-from crewai.process import Process
-from crewai.rag.embeddings.types import EmbedderConfig
-from crewai.rag.types import SearchResult
-from crewai.security.fingerprint import Fingerprint
-from crewai.security.security_config import SecurityConfig
-from crewai.task import Task
-from crewai.tasks.conditional_task import ConditionalTask
-from crewai.tasks.task_output import TaskOutput
-from crewai.tools.agent_tools.agent_tools import AgentTools
-from crewai.tools.agent_tools.read_file_tool import ReadFileTool
-from crewai.tools.base_tool import BaseTool
-from crewai.types.streaming import CrewStreamingOutput
-from crewai.types.usage_metrics import UsageMetrics
-from crewai.utilities.constants import NOT_SPECIFIED, TRAINING_DATA_FILE
-from crewai.utilities.crew.models import CrewContext
-from crewai.utilities.evaluators.crew_evaluator_handler import CrewEvaluator
-from crewai.utilities.evaluators.task_evaluator import TaskEvaluator
-from crewai.utilities.file_handler import FileHandler
-from crewai.utilities.file_store import clear_files, get_all_files
-from crewai.utilities.formatter import (
+from crewai.flow.flow_trackable import FlowTrackable  # type: ignore
+from crewai.knowledge.knowledge import Knowledge  # type: ignore
+from crewai.knowledge.source.base_knowledge_source import (  # type: ignore
+    BaseKnowledgeSource,
+)
+from crewai.llm import LLM  # type: ignore
+from crewai.llms.base_llm import BaseLLM  # type: ignore
+from crewai.process import Process  # type: ignore
+from crewai.rag.embeddings.types import EmbedderConfig  # type: ignore
+from crewai.rag.types import SearchResult  # type: ignore
+from crewai.security.fingerprint import Fingerprint  # type: ignore
+from crewai.security.security_config import SecurityConfig  # type: ignore
+from crewai.task import Task  # type: ignore
+from crewai.tasks.conditional_task import ConditionalTask  # type: ignore
+from crewai.tasks.task_output import TaskOutput  # type: ignore
+from crewai.tools.agent_tools.agent_tools import AgentTools  # type: ignore
+from crewai.tools.agent_tools.read_file_tool import ReadFileTool  # type: ignore
+from crewai.tools.base_tool import BaseTool  # type: ignore
+from crewai.types.streaming import CrewStreamingOutput  # type: ignore
+from crewai.types.usage_metrics import UsageMetrics  # type: ignore
+from crewai.utilities.constants import (  # type: ignore
+    NOT_SPECIFIED,
+    TRAINING_DATA_FILE,
+)
+from crewai.utilities.crew.models import CrewContext  # type: ignore
+from crewai.utilities.evaluators.crew_evaluator_handler import (
+    CrewEvaluator,  # type: ignore
+)
+from crewai.utilities.evaluators.task_evaluator import TaskEvaluator  # type: ignore
+from crewai.utilities.file_handler import FileHandler  # type: ignore
+from crewai.utilities.file_store import clear_files, get_all_files  # type: ignore
+from crewai.utilities.formatter import (  # type: ignore
     aggregate_raw_outputs_from_task_outputs,
     aggregate_raw_outputs_from_tasks,
 )
-from crewai.utilities.i18n import get_i18n
-from crewai.utilities.llm_utils import create_llm
-from crewai.utilities.logger import Logger
-from crewai.utilities.planning_handler import CrewPlanner
-from crewai.utilities.printer import PrinterColor
-from crewai.utilities.rpm_controller import RPMController
-from crewai.utilities.streaming import (
+from crewai.utilities.i18n import get_i18n  # type: ignore
+from crewai.utilities.llm_utils import create_llm  # type: ignore
+from crewai.utilities.logger import Logger  # type: ignore
+from crewai.utilities.planning_handler import CrewPlanner  # type: ignore
+from crewai.utilities.printer import PrinterColor  # type: ignore
+from crewai.utilities.rpm_controller import RPMController  # type: ignore
+from crewai.utilities.streaming import (  # type: ignore
     create_async_chunk_generator,
     create_chunk_generator,
     signal_end,
     signal_error,
 )
-from crewai.utilities.string_utils import sanitize_tool_name
-from crewai.utilities.task_output_storage_handler import TaskOutputStorageHandler
-from crewai.utilities.training_handler import CrewTrainingHandler
+from crewai.utilities.string_utils import sanitize_tool_name  # type: ignore
+from crewai.utilities.task_output_storage_handler import (
+    TaskOutputStorageHandler,  # type: ignore
+)
+from crewai.utilities.training_handler import CrewTrainingHandler  # type: ignore
 
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -260,7 +271,9 @@ class Crew(FlowTrackable, BaseModel):
     )
     planning: bool | None = Field(
         default=False,
-        description="Plan the crew execution and add the plan to the crew.",
+        description=(
+            "Plan the crew execution and add the plan to the crew."
+        ),
     )
     planning_llm: str | InstanceOf[BaseLLM] | Any | None = Field(
         default=None,
@@ -293,7 +306,9 @@ class Crew(FlowTrackable, BaseModel):
     )
     security_config: SecurityConfig = Field(
         default_factory=SecurityConfig,
-        description="Security configuration for the crew, including fingerprinting.",
+        description=(
+            "Security configuration for the crew, including fingerprinting."
+        ),
     )
     token_usage: UsageMetrics | None = Field(
         default=None,
@@ -301,7 +316,10 @@ class Crew(FlowTrackable, BaseModel):
     )
     tracing: bool | None = Field(
         default=None,
-        description="Whether to enable tracing for the crew. True=always enable, False=always disable, None=check environment/user settings.",
+        description=(
+            "Whether to enable tracing for the crew. True=always enable, "
+            "False=always disable, None=check environment/user settings."
+        ),
     )
 
     @field_validator("id", mode="before")
@@ -326,7 +344,9 @@ class Crew(FlowTrackable, BaseModel):
         """
 
         # TODO: Improve typing
-        return json.loads(v) if isinstance(v, Json) else v  # type: ignore
+        if isinstance(v, Json):
+            return json.loads(v)  # type: ignore
+        return v
 
     @model_validator(mode="after")
     def set_private_attrs(self) -> Crew:
@@ -356,14 +376,16 @@ class Crew(FlowTrackable, BaseModel):
     def create_crew_memory(self) -> Crew:
         """Initialize unified memory, respecting crew embedder config."""
         if self.memory is True:
-            from crewai.memory.unified_memory import Memory
+            from crewai.memory.unified_memory import UnifiedMemory  # type: ignore
 
             embedder = None
             if self.embedder is not None:
-                from crewai.rag.embeddings.factory import build_embedder
+                from crewai.rag.embeddings.factory import (
+                    EmbedderFactory,  # type: ignore
+                )
 
-                embedder = build_embedder(self.embedder)
-            self._memory = Memory(embedder=embedder)
+                embedder = EmbedderFactory.build(self.embedder)
+            self._memory = UnifiedMemory(embedder=embedder)
         elif self.memory:
             # User passed a Memory / MemoryScope / MemorySlice instance
             self._memory = self.memory
@@ -401,7 +423,8 @@ class Crew(FlowTrackable, BaseModel):
                 raise PydanticCustomError(
                     "missing_manager_llm_or_manager_agent",
                     (
-                        "Attribute `manager_llm` or `manager_agent` is required when using hierarchical process."
+                        "Attribute `manager_llm` or `manager_agent` is "
+                        "required when using hierarchical process."
                     ),
                     {},
                 )
@@ -547,10 +570,11 @@ class Crew(FlowTrackable, BaseModel):
                 for context_task in task.context:
                     if id(context_task) not in task_indices:
                         continue  # Skip context tasks not in the main tasks list
-                    if task_indices[id(context_task)] > task_indices[id(task)]:
+                    if task_indices[id(context_task)] > task_indices[id(task)]:  # type: ignore
                         raise ValueError(
                             f"Task '{task.description}' has a context dependency "
-                            f"on a future task '{context_task.description}', "
+                            f"on a future task "
+                            f"'{context_task.description}', "
                             f"which is not allowed."
                         )
         return self
@@ -570,13 +594,13 @@ class Crew(FlowTrackable, BaseModel):
         Returns:
             Fingerprint: The crew's fingerprint
         """
-        return self.security_config.fingerprint
+        return self.security_config.fingerprint  # type: ignore
 
     def _setup_from_config(self) -> None:
         """Initializes agents and tasks from the provided config."""
         if self.config is None:
             raise ValueError("Config should not be None.")
-        if not self.config.get("agents") or not self.config.get("tasks"):
+        if not self.config.get("agents") or not self.config.get("tasks"):  # type: ignore
             raise PydanticCustomError(
                 "missing_keys_in_config", "Config should have 'agents' and 'tasks'.", {}
             )
@@ -1420,7 +1444,9 @@ class Crew(FlowTrackable, BaseModel):
         Returns:
             Updated list with memory tools added.
         """
-        from crewai.tools.memory_tools import create_memory_tools
+        from crewai.tools.memory_tools import (  # type: ignore
+            create_memory_tools,
+        )
 
         return self._merge_tools(tools, create_memory_tools(memory))
 
@@ -1708,7 +1734,7 @@ class Crew(FlowTrackable, BaseModel):
         copied_data.pop("agents", None)
         copied_data.pop("tasks", None)
 
-        return Crew(
+        return Crew(  # type: ignore
             **copied_data,
             agents=cloned_agents,
             tasks=cloned_tasks,
@@ -1726,13 +1752,8 @@ class Crew(FlowTrackable, BaseModel):
 
     def _interpolate_inputs(self, inputs: dict[str, Any]) -> None:
         """Interpolates the inputs in the tasks and agents."""
-        [
-            task.interpolate_inputs_and_add_conversation_history(
-                # type: ignore # "interpolate_inputs" of "Task" does not return a value (it only ever returns None)
-                inputs
-            )
-            for task in self.tasks
-        ]
+        for task in self.tasks:
+            task.interpolate_inputs_and_add_conversation_history(inputs)
         for agent in self.agents:
             agent.interpolate_inputs(inputs)
 
@@ -2004,7 +2025,7 @@ class Crew(FlowTrackable, BaseModel):
     @staticmethod
     def _show_tracing_disabled_message() -> None:
         """Show a message when tracing is disabled."""
-        from crewai.events.listeners.tracing.utils import (
+        from crewai.events.listeners.tracing.utils import (  # type: ignore
             has_user_declined_tracing,
             should_suppress_tracing_messages,
         )

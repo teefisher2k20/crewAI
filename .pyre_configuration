@@ -1,0 +1,16 @@
+{
+  "source_directories": [
+    "lib/crewai/src",
+    "lib/crewai-tools/src",
+    "lib/crewai-files/src"
+  ],
+  "exclude": [
+    ".*/tests/.*",
+    ".*/templates/.*"
+  ],
+  "ignore_all_errors": [
+    "lib/crewai/src/crewai/cli/templates"
+  ],
+  "typeshed": null,
+  "workers": 4
+}

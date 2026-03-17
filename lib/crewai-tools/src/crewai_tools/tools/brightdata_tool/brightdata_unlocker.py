@@ -67,8 +67,8 @@ class BrightDataWebUnlockerTool(BaseTool):
     api_key: str = ""
     zone: str = ""
     url: str | None = None
-    format: str = "raw"
-    data_format: str = "markdown"
+    format_: str = "raw"
+    data_format_: str = "markdown"
     env_vars: list[EnvVar] = Field(
         default_factory=lambda: [
             EnvVar(
@@ -82,15 +82,15 @@ class BrightDataWebUnlockerTool(BaseTool):
     def __init__(
         self,
         url: str | None = None,
-        format: str = "raw",
-        data_format: str = "markdown",
+        format_: str = "raw",
+        data_format_: str = "markdown",
         **kwargs: Any,
     ):
         super().__init__(**kwargs)
         self.base_url = self._config.API_URL
         self.url = url
-        self.format = format
-        self.data_format = data_format
+        self.format = format_
+        self.data_format = data_format_
 
         self.api_key = os.getenv("BRIGHT_DATA_API_KEY") or ""
         self.zone = os.getenv("BRIGHT_DATA_ZONE") or ""
@@ -142,5 +142,5 @@ class BrightDataWebUnlockerTool(BaseTool):
 
         except requests.RequestException as e:
             return f"HTTP Error performing BrightData Web Unlocker Scrape: {e}\nResponse: {getattr(e.response, 'text', '')}"
-        except Exception as e:
+        except Exception as e:  # type: ignore
             return f"Error fetching results: {e!s}"

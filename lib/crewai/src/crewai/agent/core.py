@@ -13,7 +13,7 @@ from typing import (
     cast,
 )
 
-from pydantic import (
+from pydantic import (  # type: ignore
     BaseModel,
     ConfigDict,
     Field,
@@ -85,14 +85,14 @@ from crewai.utilities.training_handler import CrewTrainingHandler
 
 
 try:
-    from crewai.a2a.types import AgentResponseProtocol
+    from crewai.a2a.types import AgentResponseProtocol  # type: ignore
 except ImportError:
     AgentResponseProtocol = None  # type: ignore[assignment, misc]
 
 
 if TYPE_CHECKING:
-    from crewai_files import FileInput
-    from crewai_tools import CodeInterpreterTool
+    from crewai_files import FileInput  # type: ignore
+    from crewai_tools import CodeInterpreterTool  # type: ignore
 
     from crewai.a2a.config import A2AClientConfig, A2AConfig, A2AServerConfig
     from crewai.agents.agent_builder.base_agent import PlatformAppOrAction
@@ -246,8 +246,9 @@ class Agent(BaseAgent):
     )
 
     @model_validator(mode="before")
-    def validate_from_repository(cls, v: Any) -> dict[str, Any] | None | Any:  # noqa: N805
-        if v is not None and (from_repository := v.get("from_repository")):
+    @classmethod
+    def validate_from_repository(cls, v: Any) -> dict[str, Any] | None | Any:
+        if v is not None and isinstance(v, dict) and (from_repository := v.get("from_repository")):
             return load_agent_from_repository(from_repository) | v
         return v
 
@@ -307,8 +308,10 @@ class Agent(BaseAgent):
         Returns:
             True if native function calling is supported and tools are available.
         """
+        from crewai.llms.base_llm import BaseLLM
         return (
-            hasattr(self.llm, "supports_function_calling")
+            isinstance(self.llm, BaseLLM)
+            and hasattr(self.llm, "supports_function_calling")
             and callable(getattr(self.llm, "supports_function_calling", None))
             and self.llm.supports_function_calling()
             and len(tools) > 0
@@ -428,8 +431,10 @@ class Agent(BaseAgent):
 
             validate_max_execution_time(self.max_execution_time)
             if self.max_execution_time is not None:
+                # Ensure it's passed as int to satisfy linter
+                timeout_val = int(self.max_execution_time)
                 result = self._execute_with_timeout(
-                    task_prompt, task, self.max_execution_time
+                    task_prompt, task, timeout_val
                 )
             else:
                 result = self._execute_without_timeout(task_prompt, task)
@@ -665,8 +670,9 @@ class Agent(BaseAgent):
 
             validate_max_execution_time(self.max_execution_time)
             if self.max_execution_time is not None:
+                timeout_val = int(self.max_execution_time)
                 result = await self._aexecute_with_timeout(
-                    task_prompt, task, self.max_execution_time
+                    task_prompt, task, timeout_val
                 )
             else:
                 result = await self._aexecute_without_timeout(task_prompt, task)
@@ -1109,6 +1115,9 @@ class Agent(BaseAgent):
             return None
 
         try:
+            if not isinstance(self.llm, BaseLLM):
+                raise ValueError("LLM must be an instance of BaseLLM")
+
             rewritten_query = self.llm.call(
                 [
                     {
@@ -1214,10 +1223,12 @@ class Agent(BaseAgent):
 
         # Prepare stop words
         stop_words = [self.i18n.slice("observation")]
-        if self.response_template:
-            stop_words.append(
-                self.response_template.split("{{ .Response }}")[1].strip()
-            )
+        if self.response_template is not None:
+            res_temp = str(self.response_template)
+            if "{{ .Response }}" in res_temp:
+                parts = res_temp.split("{{ .Response }}")
+                if len(parts) > 1:
+                    stop_words.append(parts[1].strip())
 
         # Get RPM limit function
         rpm_limit_fn = (

@@ -29,6 +29,8 @@ dev = [
     "types-psycopg2==2.9.21.20251012",
     "types-pymysql==1.1.0.20250916",
     "types-aiofiles~=25.1.0",
+    "types-pydantic~=2.10.0",
+    "opentelemetry-stubs~=1.34.0",
 ]
 
 

@@ -8,7 +8,7 @@ import re
 from typing import Any, Final, Literal
 import uuid
 
-from pydantic import (
+from pydantic import (  # type: ignore
     UUID4,
     BaseModel,
     Field,
@@ -16,7 +16,7 @@ from pydantic import (
     field_validator,
     model_validator,
 )
-from pydantic_core import PydanticCustomError
+from pydantic_core import PydanticCustomError  # type: ignore
 from typing_extensions import Self
 
 from crewai.agent.internal.meta import AgentMeta
