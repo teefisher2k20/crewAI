@@ -1,0 +1,3 @@
+## 2025-05-15 - [Flow Visualization Accessibility]
+**Learning:** The CrewAI Flow visualization interface used non-semantic `div` elements for primary navigation (zoom, theme, export) and drawer accordions, making them inaccessible to keyboard and screen reader users. Proper accessibility requires semantic `<button>` elements, ARIA toolbar roles for grouped controls, and dynamic management of `aria-expanded`/`aria-controls` for interactive components like accordions.
+**Action:** When implementing interactive visualization components, always use semantic `<button type="button">` for clickable elements, apply ARIA labels to icon-only buttons, and ensure focus-visible styles are provided to assist keyboard navigation.
