@@ -356,7 +356,14 @@ h3 {
     border-color: '{{ CREWAI_ORANGE }}';
 }
 
+.legend-ide-select:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
+}
+
 .nav-button {
+    padding: 0;
+    font-family: inherit;
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
@@ -380,6 +387,11 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 #drawer {
@@ -801,6 +813,11 @@ h3 {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
+.code-copy-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
+}
+
 .code-copy-button:active {
     background: rgba(255, 255, 255, 0.2);
 }
@@ -892,6 +909,9 @@ h3 {
 }
 
 .accordion-header {
+    width: 100%;
+    border: none;
+    font-family: inherit;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -900,6 +920,11 @@ h3 {
     background: rgba(102,102,102,0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
+}
+
+.accordion-header:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: -2px;
 }
 
 .accordion-subheader {
