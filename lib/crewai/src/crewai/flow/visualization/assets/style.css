@@ -351,8 +351,9 @@ h3 {
     border-color: var(--text-secondary);
 }
 
-.legend-ide-select:focus {
-    outline: none;
+.legend-ide-select:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
     border-color: '{{ CREWAI_ORANGE }}';
 }
 
@@ -376,10 +377,17 @@ h3 {
     position: relative;
     z-index: 10002;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0;
+    font-family: inherit;
 }
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 #drawer {
@@ -667,6 +675,18 @@ h3 {
     margin-bottom: 8px;
     font-weight: 600;
     transition: color 0.3s ease;
+}
+
+.drawer-section-title:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+.condition-label:focus-visible,
+.trigger-group:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 .drawer-badge {
