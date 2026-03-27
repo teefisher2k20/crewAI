@@ -19,7 +19,7 @@
     <canvas id="highlight-canvas"></canvas>
 
     <!-- Side drawer -->
-    <div id="drawer" style="visibility: hidden;">
+    <div id="drawer" role="dialog" aria-modal="false" aria-labelledby="drawer-node-name" style="visibility: hidden;">
         <div class="drawer-header">
             <div class="drawer-title" id="drawer-node-name">Node Details</div>
             <div style="display: flex; align-items: center;">
@@ -46,27 +46,27 @@
 
     <!-- Custom navigation controls -->
     <div class="nav-controls">
-        <div class="nav-button" id="theme-toggle" title="Toggle Dark Mode">
+        <button type="button" class="nav-button" id="theme-toggle" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">
             <i data-lucide="moon" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="zoom-in" title="Zoom In">
+        </button>
+        <button type="button" class="nav-button" id="zoom-in" aria-label="Zoom In" title="Zoom In">
             <i data-lucide="zoom-in" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="zoom-out" title="Zoom Out">
+        </button>
+        <button type="button" class="nav-button" id="zoom-out" aria-label="Zoom Out" title="Zoom Out">
             <i data-lucide="zoom-out" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="fit" title="Fit to Screen">
+        </button>
+        <button type="button" class="nav-button" id="fit" aria-label="Fit to Screen" title="Fit to Screen">
             <i data-lucide="maximize-2" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="export-png" title="Export to PNG">
+        </button>
+        <button type="button" class="nav-button" id="export-png" aria-label="Export to PNG" title="Export to PNG">
             <i data-lucide="image" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="export-pdf" title="Export to PDF">
+        </button>
+        <button type="button" class="nav-button" id="export-pdf" aria-label="Export to PDF" title="Export to PDF">
             <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
-        </div>
-        <!-- <div class="nav-button" id="export-json" title="Export to JSON">
+        </button>
+        <!-- <button type="button" class="nav-button" id="export-json" aria-label="Export to JSON" title="Export to JSON">
             <i data-lucide="braces" style="width: 18px; height: 18px;"></i>
-        </div> -->
+        </button> -->
     </div>
 
     <div id="network-container">
