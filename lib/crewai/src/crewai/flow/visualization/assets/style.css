@@ -353,7 +353,6 @@ h3 {
 
 .legend-ide-select:focus {
     outline: none;
-    border-color: '{{ CREWAI_ORANGE }}';
 }
 
 .nav-button {
@@ -376,6 +375,17 @@ h3 {
     position: relative;
     z-index: 10002;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0;
+    font-family: inherit;
+}
+
+.nav-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.code-copy-button:focus-visible,
+.legend-ide-select:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 .nav-button:hover {
@@ -465,7 +475,6 @@ h3 {
     font-size: 24px;
     color: var(--text-secondary);
     cursor: pointer;
-    padding: 4px 8px;
     line-height: 1;
     transition: color 0.3s ease;
     display: flex;
@@ -475,6 +484,11 @@ h3 {
 
 .drawer-close:hover {
     color: '{{ CREWAI_ORANGE }}';
+}
+
+.drawer-close {
+    padding: 4px;
+    font-family: inherit;
 }
 
 .drawer-close i {
