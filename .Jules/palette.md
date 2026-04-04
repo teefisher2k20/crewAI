@@ -1,0 +1,3 @@
+## 2025-04-04 - Semantic Controls and Focus Visibility in Flow Visualization
+**Learning:** Transitioning from non-semantic `div` elements to proper `<button type="button">` tags for toolbars automatically improves keyboard accessibility by providing standard focus behavior. Using brand-aligned `:focus-visible` styles ensures that keyboard users have high-contrast, delightful feedback that matches the UI's aesthetic.
+**Action:** When auditing toolbars or navigation controls, prioritize semantic button tags over generic divs, and always synchronize state-dependent ARIA labels (like theme toggles) in the associated JavaScript logic.
