@@ -359,6 +359,8 @@ h3 {
 .nav-button {
     width: 40px;
     height: 40px;
+    padding: 0;
+    font-family: inherit;
     background: var(--bg-secondary);
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
@@ -380,6 +382,11 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 #drawer {
