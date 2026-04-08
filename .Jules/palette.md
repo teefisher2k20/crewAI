@@ -1,0 +1,3 @@
+## 2025-05-15 - Improving Accessibility in Flow Visualization
+**Learning:** In a visualization tool where interactivity is key, purely visual focus indicators and non-semantic elements (like `div` for buttons) hinder keyboard and screen reader accessibility. Converting interactive elements to semantic `<button>` tags with `:focus-visible` styles and proper ARIA attributes (like `aria-label` and `aria-expanded`) significantly improves the UX for all users without altering the design.
+**Action:** Always use semantic elements for interactive controls and ensure ARIA states are synchronized when using dynamic UI components.
