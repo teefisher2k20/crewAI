@@ -1,0 +1,3 @@
+## 2025-05-15 - [Accessibility Sweep for Flow Visualization]
+**Learning:** The Flow Visualization tool used non-semantic `div` elements for critical navigation and theme controls. Converting these to `button` elements required explicit CSS resets (padding, font-family) to maintain the "frosted glass" aesthetic while gaining native keyboard and screen reader support. Using `role="toolbar"` and synchronized `aria-label`/`title` attributes significantly improved the screen reader navigation experience for grouped actions.
+**Action:** Always check interactive icon-only elements for semantic HTML and ensure they have accessible labels that update dynamically with state (e.g., theme toggles or copy-to-clipboard buttons).
