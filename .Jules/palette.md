@@ -1,0 +1,3 @@
+## 2025-05-14 - Semantic Buttons and Focus Indicators in Visualization Tools
+**Learning:** Converting interactive 'div' elements to semantic '<button type="button">' elements is a major win for accessibility (keyboard and screen readers). However, it requires CSS resets for padding, borders, and font-family to avoid disrupting existing layouts. Clear ':focus-visible' styles using existing brand colors provide high-contrast guidance for keyboard users.
+**Action:** Always prefer semantic buttons for interactive elements and include a robust CSS reset and focus indicator style to ensure both accessibility and visual consistency.
