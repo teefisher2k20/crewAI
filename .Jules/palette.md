@@ -1,0 +1,3 @@
+## 2025-05-22 - [Accessibility Overhaul for Flow Visualization]
+**Learning:** Converting non-semantic interactive elements (like `div` or `span`) to semantic `<button>` tags is the most effective way to ensure baseline keyboard accessibility and screen reader support. However, this requires careful CSS resets (`border`, `padding`, `font-family`, `width`) to maintain visual consistency across browsers.
+**Action:** When improving existing UIs, prioritize replacing `div` click handlers with semantic `<button type="button">` and always include `:focus-visible` styles with a high-contrast outline (using theme tokens like `CREWAI_ORANGE`) to aid keyboard users.
