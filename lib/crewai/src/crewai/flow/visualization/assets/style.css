@@ -357,6 +357,9 @@ h3 {
 }
 
 .nav-button {
+    padding: 0;
+    font-family: inherit;
+    border: none;
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
@@ -380,6 +383,11 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid '{{ CREWAI_ORANGE }}';
+    outline-offset: 2px;
 }
 
 #drawer {
