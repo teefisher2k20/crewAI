@@ -1,0 +1,3 @@
+## 2024-04-23 - [Accessibility in Visualization Tools]
+**Learning:** Visualization tools often use custom UI overlays (like navigation buttons and legends) that rely on generic `div` elements for styling convenience. This completely breaks keyboard navigation and screen reader support, as these elements are not focusable or identifiable as interactive controls.
+**Action:** Always prefer semantic `<button type="button">` for custom controls. Use a CSS reset (padding: 0, font-family: inherit, border: none) to maintain the custom visual design while providing built-in accessibility. Group related controls with `role="toolbar"` and `aria-label` to provide context to screen reader users.
