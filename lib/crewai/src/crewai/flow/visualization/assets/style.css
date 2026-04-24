@@ -351,12 +351,16 @@ h3 {
     border-color: var(--text-secondary);
 }
 
-.legend-ide-select:focus {
-    outline: none;
+.legend-ide-select:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
     border-color: '{{ CREWAI_ORANGE }}';
 }
 
 .nav-button {
+    padding: 0;
+    font-family: inherit;
+    border: none;
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
@@ -380,6 +384,14 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.code-copy-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 #drawer {
