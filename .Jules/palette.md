@@ -1,0 +1,3 @@
+## 2026-04-26 - Interactive Flow Accessibility Improvements
+**Learning:** Converting navigation controls from `div` elements to semantic `button` tags and adding ARIA roles (toolbar, dialog) significantly improves the accessibility of interactive visualizations without requiring complex custom JS. Consistent `:focus-visible` styling is crucial for keyboard navigation in complex canvas-based UIs.
+**Action:** Always use semantic `button` tags for interactive elements and provide descriptive `aria-label` attributes for icon-only controls. Ensure focus indicators use high-contrast outlines and appropriate offsets.
