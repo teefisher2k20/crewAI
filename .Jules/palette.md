@@ -1,0 +1,3 @@
+## 2024-04-30 - [Improving Accessibility in Flow Visualization]
+**Learning:** Icon-only buttons implemented as `div` elements are not keyboard-accessible and invisible to screen readers. Converting them to semantic `<button type="button">` with `aria-label` provides a massive accessibility win with minimal code change. Adding `:focus-visible` ensures that only keyboard users see the focus ring, maintaining visual polish for mouse users.
+**Action:** Always use semantic `<button>` elements for interactive controls and provide `aria-label` for any icon-only button. Implement `:focus-visible` to support keyboard navigation without cluttering the UI for others.
