@@ -1,0 +1,3 @@
+## 2025-05-15 - [Improving Flow Visualization Accessibility]
+**Learning:** Converting interactive 'div' elements to semantic 'button' tags significantly improves keyboard navigability but requires careful CSS resets (width, border, font-family, text-align) to preserve the existing UI design. Additionally, 'aria-expanded' should be explicitly set to 'true' or 'false' strings rather than boolean values for consistent screen reader interpretation.
+**Action:** Always prefer semantic elements like <button type="button"> for interactive components and ensure ':focus-visible' styles are applied for clear keyboard focus indication.
