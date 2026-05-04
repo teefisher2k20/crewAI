@@ -2,7 +2,9 @@ from pathlib import Path
 
 import click
 
-from crewai.cli.utils import copy_template
+from rich.panel import Panel
+
+from crewai.cli.utils import console, copy_template
 from crewai.utilities.printer import Printer
 
 
@@ -31,9 +33,17 @@ def add_crew_to_flow(crew_name: str) -> None:
     # Create the crew within the flow's crews directory
     create_embedded_crew(crew_name, parent_folder=crews_folder)
 
-    click.echo(
-        f"Crew {crew_name} added to the current flow successfully!",
+    panel = Panel(
+        f"1. [bold]Edit src/{flow_folder.name}/main.py[/bold] to use the new crew\n"
+        "2. [bold]crewai run[/bold]",
+        title="🚀 Next Steps",
+        border_style="green",
+        padding=(1, 2),
+        expand=False,
     )
+    console.print("\n")
+    console.print(panel)
+    console.print("\n")
 
 
 def create_embedded_crew(crew_name: str, parent_folder: Path) -> None:
