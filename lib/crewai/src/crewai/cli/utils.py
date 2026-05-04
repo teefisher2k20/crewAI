@@ -23,6 +23,25 @@ if sys.version_info >= (3, 11):
 console = Console()
 
 
+def print_next_steps(folder_name: str) -> None:
+    """Print the next steps for the user after creating a crew or flow."""
+    from rich.panel import Panel
+
+    next_steps = (
+        f"1. [bold]Navigate to your project:[/bold] cd {folder_name}\n"
+        f"2. [bold]Install dependencies:[/bold] crewai install\n"
+        f"3. [bold]Run your crew:[/bold] crewai run"
+    )
+    panel = Panel(
+        next_steps,
+        title="🚀 Next Steps",
+        border_style="green",
+        padding=(1, 2),
+    )
+    console.print("\n")
+    console.print(panel)
+
+
 def copy_template(
     src: Path, dst: Path, name: str, class_name: str, folder_name: str
 ) -> None:
