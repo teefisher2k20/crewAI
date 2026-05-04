@@ -363,3 +363,33 @@ def test_get_crews_ignores_template_directories(
     utils.get_crews()
 
     assert not template_crew_detected
+
+def test_print_next_steps(monkeypatch):
+    from rich.panel import Panel
+    printed_panels = []
+
+    class MockConsole:
+        def print(self, content, *args, **kwargs):
+            if isinstance(content, Panel):
+                printed_panels.append(content)
+
+    monkeypatch.setattr(utils, "console", MockConsole())
+
+    # Test 'crew' type (default)
+    utils.print_next_steps("test_crew")
+    assert len(printed_panels) == 1
+    assert printed_panels[0].title == "🚀 Next Steps"
+    assert "cd test_crew" in printed_panels[0].renderable
+
+    # Test 'flow' type
+    utils.print_next_steps("test_flow", step_type="flow")
+    assert len(printed_panels) == 2
+    assert printed_panels[1].title == "🚀 Next Steps"
+    assert "cd test_flow" in printed_panels[1].renderable
+
+    # Test 'embedded_crew' type
+    utils.print_next_steps("test_embedded", step_type="embedded_crew")
+    assert len(printed_panels) == 3
+    assert printed_panels[2].title == "🚀 Next Steps"
+    assert "Edit your flow's main.py" in printed_panels[2].renderable
+    assert "cd test_embedded" not in printed_panels[2].renderable
