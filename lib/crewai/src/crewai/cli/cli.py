@@ -26,7 +26,12 @@ from crewai.cli.tools.main import ToolCommand
 from crewai.cli.train_crew import train_crew
 from crewai.cli.triggers.main import TriggersCommand
 from crewai.cli.update_crew import update_crew
-from crewai.cli.utils import build_env_with_tool_repository_credentials, read_toml
+from crewai.cli.utils import (
+    build_env_with_tool_repository_credentials,
+    console,
+    read_toml,
+)
+from crewai.cli.version import is_newer_version_available
 from crewai.memory.storage.kickoff_task_outputs_storage import (
     KickoffTaskOutputsSQLiteStorage,
 )
@@ -103,14 +108,23 @@ def version(tools):
         crewai_version = get_version("crewai")
     except Exception:
         crewai_version = "unknown version"
-    click.echo(f"crewai version: {crewai_version}")
+    console.print(f"[bold]crewai version:[/bold] {crewai_version}")
 
     if tools:
         try:
-            tools_version = get_version("crewai")
-            click.echo(f"crewai tools version: {tools_version}")
+            tools_version = get_version("crewai-tools")
+            console.print(f"[bold]crewai tools version:[/bold] {tools_version}")
         except Exception:
-            click.echo("crewai tools not installed")
+            console.print("crewai tools not installed")
+
+    is_newer, current_version, latest_version = is_newer_version_available()
+    if is_newer:
+        console.print(
+            f"\n[bold yellow]A newer version of crewAI is available: {latest_version}[/bold yellow]"
+        )
+        console.print(
+            f"[dim]To update, run: [/dim][bold cyan]pip install -U crewai[/bold cyan]\n"
+        )
 
 
 @crewai.command()
