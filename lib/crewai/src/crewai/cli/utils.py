@@ -269,6 +269,23 @@ def write_env_file(folder_path: Path, env_vars: dict[str, Any]) -> None:
             file.write(f"{key.upper()}={value}\n")
 
 
+def print_next_steps(folder_name: str) -> None:
+    """Print next steps after creating a crew or flow."""
+    from rich.panel import Panel
+
+    console.print("\n")
+    panel = Panel(
+        f"Navigate to your project: [bold cyan]cd {folder_name}[/bold cyan]\n"
+        "Install dependencies: [bold cyan]crewai install[/bold cyan]\n"
+        "Run your crew: [bold cyan]crewai run[/bold cyan]",
+        title="🚀 Next Steps",
+        border_style="green",
+        padding=(1, 2),
+        expand=False,
+    )
+    console.print(panel)
+
+
 def get_crews(crew_path: str = "crew.py", require: bool = False) -> list[Crew]:
     """Get the crew instances from a file."""
     crew_instances = []
