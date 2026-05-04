@@ -9,6 +9,7 @@ from typing import Any, cast, get_type_hints
 
 import click
 from rich.console import Console
+from rich.panel import Panel
 import tomli
 
 from crewai.cli.config import Settings
@@ -580,6 +581,31 @@ def _load_tools_from_init(init_file: Path) -> list[dict[str, Any]]:
 
     finally:
         sys.modules.pop("temp_module", None)
+
+
+def print_next_steps(folder_name: str, step_type: str = "crew") -> None:
+    """Print the next steps for the user."""
+    if step_type == "embedded_crew":
+        panel = Panel(
+            f"[bold]Next Steps:[/bold]\n"
+            f"1. Go to your flow's [bold]main.py[/bold] and add the new crew to it.\n"
+            f"2. Run [bold]crewai run[/bold] to see the changes.",
+            title="🚀 Next Steps",
+            border_style="green",
+            padding=(1, 2),
+        )
+    else:
+        panel = Panel(
+            f"[bold]Next Steps:[/bold]\n"
+            f"1. [bold]cd {folder_name}[/bold]\n"
+            f"2. Install dependencies: [bold]crewai install[/bold]\n"
+            f"3. Run your {step_type}: [bold]crewai run[/bold]",
+            title="🚀 Next Steps",
+            border_style="green",
+            padding=(1, 2),
+        )
+    console.print("\n")
+    console.print(panel)
 
 
 def _print_no_tools_warning() -> None:

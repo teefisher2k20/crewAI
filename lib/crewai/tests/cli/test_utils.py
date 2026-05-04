@@ -363,3 +363,29 @@ def test_get_crews_ignores_template_directories(
     utils.get_crews()
 
     assert not template_crew_detected
+
+
+def test_print_next_steps_crew(capsys):
+    utils.print_next_steps("test_folder", "crew")
+    captured = capsys.readouterr()
+    assert "Next Steps:" in captured.out
+    assert "cd test_folder" in captured.out
+    assert "crewai install" in captured.out
+    assert "crewai run" in captured.out
+
+
+def test_print_next_steps_flow(capsys):
+    utils.print_next_steps("test_flow", "flow")
+    captured = capsys.readouterr()
+    assert "Next Steps:" in captured.out
+    assert "cd test_flow" in captured.out
+    assert "crewai install" in captured.out
+    assert "crewai run" in captured.out
+
+
+def test_print_next_steps_embedded_crew(capsys):
+    utils.print_next_steps("test_crew", "embedded_crew")
+    captured = capsys.readouterr()
+    assert "Next Steps:" in captured.out
+    assert "main.py" in captured.out
+    assert "crewai run" in captured.out
