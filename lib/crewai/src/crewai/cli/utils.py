@@ -9,6 +9,7 @@ from typing import Any, cast, get_type_hints
 
 import click
 from rich.console import Console
+from rich.panel import Panel
 import tomli
 
 from crewai.cli.config import Settings
@@ -21,6 +22,21 @@ if sys.version_info >= (3, 11):
     import tomllib
 
 console = Console()
+
+
+def print_next_steps(folder_name: str) -> None:
+    """Print the next steps for the user after creating a crew or flow."""
+    console.print("\n")
+    console.print(
+        Panel(
+            f"1. [bold cyan]cd {folder_name}[/bold cyan]\n"
+            f"2. [bold cyan]crewai install[/bold cyan]\n"
+            f"3. [bold cyan]crewai run[/bold cyan]",
+            title="🚀 Next Steps",
+            border_style="green",
+            padding=(1, 2),
+        )
+    )
 
 
 def copy_template(
