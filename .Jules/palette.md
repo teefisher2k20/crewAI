@@ -1,0 +1,3 @@
+## 2026-05-07 - Improving Accessibility for Interactive Visualization Drawers
+**Learning:** Interactive UI elements in visualizations (like accordion headers) should be implemented as semantic `<button type="button">` elements rather than `div`s to ensure keyboard discoverability. Additionally, side drawers must programmatically shift focus (e.g., to a close button) upon opening to prevent keyboard focus from remaining "trapped" on the background canvas.
+**Action:** Always use `<button>` for clickable headers, manage `aria-expanded` states via JS, and include explicit `.focus()` calls when transitioning to modal-like side panels.
