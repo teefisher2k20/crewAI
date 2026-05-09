@@ -388,7 +388,8 @@ h3 {
 .drawer-close:focus-visible,
 .drawer-open-ide:focus-visible,
 .legend-ide-select:focus-visible,
-.code-copy-button:focus-visible {
+.code-copy-button:focus-visible,
+.accordion-header:focus-visible {
     outline: 2px solid var(--edge-router-color);
     outline-offset: 1px;
 }
@@ -911,6 +912,9 @@ h3 {
     background: rgba(102,102,102,0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
+    border: none;
+    font-family: inherit;
+    width: 100%;
 }
 
 .accordion-subheader {
