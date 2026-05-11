@@ -1,0 +1,3 @@
+## 2025-05-14 - [Semantic Buttons for Accordion Headers]
+**Learning:** Using semantic `<button>` elements for accordion headers instead of generic `<div>`s is essential for keyboard accessibility and screen reader support. It provides natural tab focus and allows the use of ARIA attributes like `aria-expanded` and `aria-controls` to communicate state and relationships.
+**Action:** Always prioritize semantic HTML elements for interactive controls. For expandable components, use `<button>` with `aria-expanded` and ensure `:focus-visible` styles are implemented to provide clear visual feedback for keyboard users.
