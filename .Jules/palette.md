@@ -1,0 +1,3 @@
+## 2025-05-22 - [Drawer Accessibility & Focus Management]
+**Learning:** Proper accessibility for side drawers (modals/dialogs) requires more than just ARIA roles. It must include explicit focus management: moving focus into the drawer upon opening and, crucially, restoring focus to the triggering element upon closing to maintain the user's context. Semantic HTML, such as using `<button>` instead of `<div>` for interactive headers, is essential for keyboard navigation.
+**Action:** Always implement a `lastFocusedElement` pattern for modal-like components and ensure all interactive elements use semantic tags with `:focus-visible` styling.
