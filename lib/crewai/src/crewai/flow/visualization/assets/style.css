@@ -199,7 +199,7 @@ h3 {
     grid-template-columns: repeat(4, 1fr);
     align-items: center;
     gap: 0;
-    padding: 0 24px;
+    padding: 0 12px;
     box-sizing: border-box;
     z-index: 10001;
     pointer-events: auto;
@@ -215,10 +215,8 @@ h3 {
     align-items: center;
     justify-content: center;
     min-width: 0;
-    width: -webkit-fill-available;
-    width: -moz-available;
-    width: stretch;
     position: relative;
+    width: 100%;
 }
 
 .legend-section:not(:last-child)::after {
@@ -235,7 +233,7 @@ h3 {
 
 .legend-stats-row {
     display: flex;
-    gap: 32px;
+    gap: 20px;
     justify-content: center;
     align-items: center;
     min-width: 0;
@@ -275,7 +273,7 @@ h3 {
 
 .legend-group {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     align-items: center;
 }
 
@@ -286,7 +284,7 @@ h3 {
 }
 
 .legend-item-compact span {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 500;
     text-transform: uppercase;
     color: var(--text-secondary);
@@ -378,6 +376,8 @@ h3 {
     position: relative;
     z-index: 10002;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0;
+    font-family: inherit;
 }
 
 .nav-button:hover {
@@ -901,6 +901,9 @@ h3 {
     background: rgba(102,102,102,0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
+    border: none;
+    width: 100%;
+    font-family: inherit;
 }
 
 .accordion-subheader {
@@ -913,8 +916,11 @@ h3 {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    border: none;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    width: 100%;
+    font-family: inherit;
 }
 
 .accordion-header:hover {
@@ -1119,4 +1125,24 @@ pre[class*="language-"] {
 
 .token.inserted {
 	color: green;
+}
+
+/* Focus styles for keyboard accessibility */
+.nav-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.legend-ide-select:focus-visible,
+.code-copy-button:focus-visible,
+.accordion-header:focus-visible,
+.accordion-subheader:focus-visible,
+.router-paths-title:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
+}
+
+.router-paths-title {
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: inherit;
 }
