@@ -1,0 +1,3 @@
+## 2025-05-15 - [Semantic Button Conversion and ARIA States]
+**Learning:** Converting interactive `div` elements to semantic `button` elements provides out-of-the-box keyboard accessibility (Tab, Space, Enter) but requires explicit CSS resets for `border`, `background`, and `font-family` to maintain existing design. Additionally, for dynamic UI components like accordions, `aria-expanded` must be manually synchronized with the visual state via JavaScript.
+**Action:** Always use `<button type="button">` for non-submit interactive elements and ensure ARIA attributes are updated in the event handlers.
