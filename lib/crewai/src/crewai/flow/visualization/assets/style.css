@@ -353,12 +353,14 @@ h3 {
     border-color: var(--text-secondary);
 }
 
-.legend-ide-select:focus {
-    outline: none;
-    border-color: '{{ CREWAI_ORANGE }}';
+.legend-ide-select:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
 
 .nav-button {
+    border: none;
+    font-family: inherit;
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
@@ -382,6 +384,11 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
 
 #drawer {
@@ -479,6 +486,11 @@ h3 {
     color: '{{ CREWAI_ORANGE }}';
 }
 
+.drawer-close:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
+}
+
 .drawer-close i {
     display: block;
 }
@@ -509,6 +521,11 @@ h3 {
     background: #ff6b61;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(255, 90, 80, 0.3);
+}
+
+.drawer-open-ide:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
 
 .drawer-open-ide:active {
@@ -740,6 +757,11 @@ h3 {
     max-width: 100%;
 }
 
+.router-paths-title:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
+}
+
 .drawer-code {
     background: rgba(102,102,102,0.08);
     padding: 4px 8px;
@@ -800,6 +822,11 @@ h3 {
 .code-copy-button:hover {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.3);
+}
+
+.code-copy-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
 
 .code-copy-button:active {
@@ -901,6 +928,13 @@ h3 {
     background: rgba(102,102,102,0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
+    border: none;
+    width: 100%;
+}
+
+.accordion-header:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
 
 .accordion-subheader {
@@ -915,6 +949,11 @@ h3 {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.accordion-subheader:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
 
 .accordion-header:hover {
