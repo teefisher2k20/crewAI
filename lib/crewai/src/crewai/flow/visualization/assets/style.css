@@ -359,6 +359,9 @@ h3 {
 }
 
 .nav-button {
+    border: none;
+    padding: 0;
+    font-family: inherit;
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
@@ -893,6 +896,9 @@ h3 {
 }
 
 .accordion-header {
+    border: none;
+    width: 100%;
+    font-family: inherit;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -904,6 +910,9 @@ h3 {
 }
 
 .accordion-subheader {
+    border: none;
+    width: 100%;
+    font-family: inherit;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1119,4 +1128,15 @@ pre[class*="language-"] {
 
 .token.inserted {
 	color: green;
+}
+
+.nav-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.legend-ide-select:focus-visible,
+.code-copy-button:focus-visible,
+.accordion-header:focus-visible,
+.accordion-subheader:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
