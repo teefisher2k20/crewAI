@@ -1,0 +1,3 @@
+## 2025-05-15 - [Accessible Semantic Components in Visualization]
+**Learning:** In interactive visualizations using canvas libraries like vis.js, overlays and side panels often use generic `div` elements for controls. Migrating these to semantic `<button type="button">` with explicit CSS resets (`border: none`, `background: none`, `font-family: inherit`) and `:focus-visible` styling significantly improves keyboard accessibility without altering the visual design.
+**Action:** Always prefer semantic HTML for interactive elements, even in deep visualization components, and ensure focus indicators are consistent with the app's brand colors.
