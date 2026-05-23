@@ -19,7 +19,7 @@
     <canvas id="highlight-canvas"></canvas>
 
     <!-- Side drawer -->
-    <div id="drawer" style="visibility: hidden;">
+    <div id="drawer" style="visibility: hidden;" role="dialog" aria-modal="true" aria-labelledby="drawer-node-name">
         <div class="drawer-header">
             <div class="drawer-title" id="drawer-node-name">Node Details</div>
             <div style="display: flex; align-items: center;">
@@ -27,7 +27,7 @@
                     <i data-lucide="file-code" style="width: 16px; height: 16px;"></i>
                     Open in IDE
                 </button>
-                <button class="drawer-close" id="drawer-close">
+                <button class="drawer-close" id="drawer-close" aria-label="Close details">
                     <i data-lucide="x" style="width: 20px; height: 20px;"></i>
                 </button>
             </div>
@@ -46,27 +46,27 @@
 
     <!-- Custom navigation controls -->
     <div class="nav-controls">
-        <div class="nav-button" id="theme-toggle" title="Toggle Dark Mode">
+        <button type="button" class="nav-button" id="theme-toggle" title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
             <i data-lucide="moon" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="zoom-in" title="Zoom In">
+        </button>
+        <button type="button" class="nav-button" id="zoom-in" title="Zoom In" aria-label="Zoom In">
             <i data-lucide="zoom-in" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="zoom-out" title="Zoom Out">
+        </button>
+        <button type="button" class="nav-button" id="zoom-out" title="Zoom Out" aria-label="Zoom Out">
             <i data-lucide="zoom-out" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="fit" title="Fit to Screen">
+        </button>
+        <button type="button" class="nav-button" id="fit" title="Fit to Screen" aria-label="Fit to Screen">
             <i data-lucide="maximize-2" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="export-png" title="Export to PNG">
+        </button>
+        <button type="button" class="nav-button" id="export-png" title="Export to PNG" aria-label="Export to PNG">
             <i data-lucide="image" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="nav-button" id="export-pdf" title="Export to PDF">
+        </button>
+        <button type="button" class="nav-button" id="export-pdf" title="Export to PDF" aria-label="Export to PDF">
             <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
-        </div>
-        <!-- <div class="nav-button" id="export-json" title="Export to JSON">
+        </button>
+        <!-- <button type="button" class="nav-button" id="export-json" title="Export to JSON" aria-label="Export to JSON">
             <i data-lucide="braces" style="width: 18px; height: 18px;"></i>
-        </div> -->
+        </button> -->
     </div>
 
     <div id="network-container">
@@ -138,7 +138,7 @@
         <!-- IDE Selector Section -->
         <div class="legend-section">
             <div class="legend-ide-column">
-                <label class="legend-ide-label">IDE</label>
+                <label class="legend-ide-label" for="ide-selector">IDE</label>
                 <select id="ide-selector" class="legend-ide-select">
                     <option value="auto">Auto-detect</option>
                     <option value="pycharm">PyCharm</option>

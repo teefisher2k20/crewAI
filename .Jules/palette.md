@@ -1,0 +1,3 @@
+## 2025-05-15 - Functional Accordions for Accessibility
+**Learning:** Converting static headers to accessible buttons in the Flow visualization drawer requires strict adherence to the accordion pattern (button + content wrapper). Merely adding a click listener to a button is insufficient if the associated content isn't correctly wrapped in an 'accordion-content' div with transition styles, as it leads to a non-functional UI that misleads users.
+**Action:** Always verify that interactive toggle elements have a corresponding content container and that both are synchronized via 'aria-expanded' and CSS state classes.
