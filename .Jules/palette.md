@@ -1,3 +1,5 @@
-## 2025-05-15 - Semantic Buttons and Focus Management in Hybrid Canvas UIs
-**Learning:** In applications where the primary interaction is on a `<canvas>` (like Vis.js networks), secondary UI elements like navigation bars and side drawers are often implemented with `div` tags for styling ease, which breaks keyboard accessibility. Converting these to semantic `<button>` elements requires careful CSS resets (padding, font-family, border) to preserve the original design while gaining native focus management and screen reader support.
-**Action:** Always check if interactive "clickable" elements are semantic `<button>` or `<a>` tags. Use `:focus-visible` with a high-contrast outline (like `CREWAI_ORANGE`) to provide clear visual feedback for keyboard users without affecting mouse users.
+# Palette's Journal - CrewAI Flow Visualization
+
+## 2025-05-15 - [Initial Exploration]
+**Learning:** The Flow visualization tool uses a side drawer for node details. Currently, it lacks explicit focus management when opening and closing, which is a key accessibility requirement for modal-like components.
+**Action:** Implement focus trapping/management: store the last focused element, focus the close button on open, and restore focus on close.
