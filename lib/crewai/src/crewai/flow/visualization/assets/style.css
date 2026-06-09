@@ -766,6 +766,7 @@ h3 {
     transition: all 0.2s;
     display: inline-block;
     margin: 3px 2px;
+    text-align: left;
 }
 
 .drawer-code-link:hover {
