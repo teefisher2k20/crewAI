@@ -766,12 +766,22 @@ h3 {
     transition: all 0.2s;
     display: inline-block;
     margin: 3px 2px;
+    text-align: left;
 }
 
 .drawer-code-link:hover {
     background: rgba(255,90,80,0.12);
     border-color: '{{ CREWAI_ORANGE }}';
     transform: translateX(2px);
+}
+
+.trigger-group,
+.condition-label {
+    border: none;
+    background: none;
+    font-family: inherit;
+    padding: 0;
+    text-align: left;
 }
 
 .code-block-container {
@@ -1139,7 +1149,10 @@ pre[class*="language-"] {
 .code-copy-button:focus-visible,
 .accordion-header:focus-visible,
 .accordion-subheader:focus-visible,
-.router-paths-title:focus-visible {
+.router-paths-title:focus-visible,
+.drawer-code-link:focus-visible,
+.trigger-group:focus-visible,
+.condition-label:focus-visible {
     outline: 2px solid {{ CREWAI_ORANGE }};
     outline-offset: 1px;
 }
