@@ -1,3 +1,7 @@
 ## 2025-05-15 - Semantic Buttons and Focus Management in Hybrid Canvas UIs
 **Learning:** In applications where the primary interaction is on a `<canvas>` (like Vis.js networks), secondary UI elements like navigation bars and side drawers are often implemented with `div` tags for styling ease, which breaks keyboard accessibility. Converting these to semantic `<button>` elements requires careful CSS resets (padding, font-family, border) to preserve the original design while gaining native focus management and screen reader support.
 **Action:** Always check if interactive "clickable" elements are semantic `<button>` or `<a>` tags. Use `:focus-visible` with a high-contrast outline (like `CREWAI_ORANGE`) to provide clear visual feedback for keyboard users without affecting mouse users.
+
+## 2025-05-22 - Focus Management in Hybrid Canvas/DOM Interfaces
+**Learning:** When a UI mixes a non-accessible primary area (like a Vis.js canvas) with accessible DOM overlays (like side drawers), focus management becomes the primary "anchor" for accessibility. Simply making the drawer accessible isn't enough; the transition of focus from the "void" of the canvas to the first interactive element of the drawer (the Close button) must be explicit to prevent keyboard users from getting lost in the DOM.
+**Action:** Implement a `DrawerManager` that stores `document.activeElement` before opening and restores it after closing. Use `setTimeout` matching the CSS animation duration to ensure the element is visible and ready to receive focus.
