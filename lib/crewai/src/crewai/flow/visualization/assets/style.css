@@ -386,6 +386,10 @@ h3 {
     background: var(--nav-button-hover);
 }
 
+.nav-button:active {
+    transform: scale(0.95);
+}
+
 #drawer {
     position: fixed;
     top: 0;
@@ -808,6 +812,7 @@ h3 {
 
 .code-copy-button:active {
     background: rgba(255, 255, 255, 0.2);
+    transform: scale(0.9);
 }
 
 .code-copy-button.copied {
