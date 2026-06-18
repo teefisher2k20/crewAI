@@ -1139,7 +1139,10 @@ pre[class*="language-"] {
 .code-copy-button:focus-visible,
 .accordion-header:focus-visible,
 .accordion-subheader:focus-visible,
-.router-paths-title:focus-visible {
+.router-paths-title:focus-visible,
+.drawer-code-link:focus-visible,
+.trigger-group:focus-visible,
+.condition-label:focus-visible {
     outline: 2px solid {{ CREWAI_ORANGE }};
     outline-offset: 1px;
 }
