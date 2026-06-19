@@ -766,12 +766,17 @@ h3 {
     transition: all 0.2s;
     display: inline-block;
     margin: 3px 2px;
+    text-align: left;
 }
 
 .drawer-code-link:hover {
     background: rgba(255,90,80,0.12);
     border-color: '{{ CREWAI_ORANGE }}';
     transform: translateX(2px);
+}
+
+.drawer-code-link:active {
+    transform: scale(0.95) translateX(2px);
 }
 
 .code-block-container {
@@ -1132,6 +1137,25 @@ pre[class*="language-"] {
 	color: green;
 }
 
+.trigger-group,
+.condition-label {
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    font-family: inherit;
+}
+
+.nav-button:active,
+.drawer-close:active,
+.drawer-open-ide:active,
+.code-copy-button:active,
+.trigger-group:active,
+.condition-label:active {
+    transform: scale(0.95);
+}
+
 .nav-button:focus-visible,
 .drawer-close:focus-visible,
 .drawer-open-ide:focus-visible,
@@ -1139,7 +1163,10 @@ pre[class*="language-"] {
 .code-copy-button:focus-visible,
 .accordion-header:focus-visible,
 .accordion-subheader:focus-visible,
-.router-paths-title:focus-visible {
+.router-paths-title:focus-visible,
+.drawer-code-link:focus-visible,
+.trigger-group:focus-visible,
+.condition-label:focus-visible {
     outline: 2px solid {{ CREWAI_ORANGE }};
     outline-offset: 1px;
 }
