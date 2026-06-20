@@ -378,6 +378,9 @@ h3 {
     position: relative;
     z-index: 10002;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    appearance: none;
+    padding: 0;
+    font-family: inherit;
 }
 
 .nav-button:hover {
@@ -901,6 +904,11 @@ h3 {
     background: rgba(102,102,102,0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
+    appearance: none;
+    border: none;
+    width: 100%;
+    font-family: inherit;
+    text-align: left;
 }
 
 .accordion-subheader {
@@ -923,6 +931,16 @@ h3 {
 
 .accordion-header:active {
     background: rgba(102,102,102,0.15);
+}
+
+.nav-button:focus-visible,
+.accordion-header:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.legend-ide-select:focus-visible,
+.code-copy-button:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 1px;
 }
 
 .accordion-title {
