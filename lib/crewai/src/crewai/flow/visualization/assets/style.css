@@ -359,6 +359,8 @@ h3 {
 }
 
 .nav-button {
+    appearance: none;
+    font-family: inherit;
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
@@ -382,6 +384,14 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible,
+.accordion-header:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 #drawer {
@@ -893,6 +903,11 @@ h3 {
 }
 
 .accordion-header {
+    appearance: none;
+    border: none;
+    font-family: inherit;
+    width: 100%;
+    text-align: left;
     display: flex;
     justify-content: space-between;
     align-items: center;
