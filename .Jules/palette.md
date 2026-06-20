@@ -1,0 +1,3 @@
+## 2025-03-11 - Semantic Buttons and Dynamic ARIA Labels in Interactive Visualizations
+**Learning:** Using `<div>` for interactive elements like zoom or theme toggles prevents keyboard accessibility and doesn't provide the expected "button" role to screen readers. Furthermore, for actions with delayed feedback (like "Copy to clipboard"), updating the `aria-label` dynamically provides much better non-visual feedback than just a visual change.
+**Action:** Always use `<button type="button">` for interactive controls and ensure `aria-label` is updated to reflect state changes (e.g., "Toggle Light Mode" vs "Toggle Dark Mode", "Copy" vs "Copied!").
