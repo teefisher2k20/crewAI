@@ -361,6 +361,8 @@ h3 {
 .nav-button {
     width: 40px;
     height: 40px;
+    padding: 0;
+    border: 1px solid var(--border-subtle);
     background: var(--bg-secondary);
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
@@ -382,6 +384,22 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.legend-ide-select:focus-visible,
+.code-copy-button:focus-visible {
+    outline: 2px solid {{ CREWAI_ORANGE }};
+    outline-offset: 1px;
+}
+
+.nav-button:active,
+.drawer-close:active,
+.drawer-open-ide:active,
+.code-copy-button:active {
+    transform: scale(0.95);
 }
 
 #drawer {
@@ -464,6 +482,7 @@ h3 {
 .drawer-close {
     background: none;
     border: none;
+    padding: 0;
     font-size: 24px;
     color: var(--text-secondary);
     cursor: pointer;
