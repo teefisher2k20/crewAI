@@ -353,12 +353,15 @@ h3 {
     border-color: var(--text-secondary);
 }
 
-.legend-ide-select:focus {
-    outline: none;
-    border-color: '{{ CREWAI_ORANGE }}';
+.legend-ide-select:focus-visible {
+    outline: 2px solid {{ CREWAI_ORANGE }};
+    outline-offset: 1px;
 }
 
 .nav-button {
+    background: none;
+    border: none;
+    padding: 0;
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
@@ -382,6 +385,15 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid {{ CREWAI_ORANGE }};
+    outline-offset: 1px;
+}
+
+.nav-button:active {
+    transform: scale(0.95);
 }
 
 #drawer {
@@ -479,6 +491,15 @@ h3 {
     color: '{{ CREWAI_ORANGE }}';
 }
 
+.drawer-close:focus-visible {
+    outline: 2px solid {{ CREWAI_ORANGE }};
+    outline-offset: 1px;
+}
+
+.drawer-close:active {
+    transform: scale(0.95);
+}
+
 .drawer-close i {
     display: block;
 }
@@ -511,8 +532,13 @@ h3 {
     box-shadow: 0 2px 8px rgba(255, 90, 80, 0.3);
 }
 
+.drawer-open-ide:focus-visible {
+    outline: 2px solid {{ CREWAI_ORANGE }};
+    outline-offset: 1px;
+}
+
 .drawer-open-ide:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.95);
     box-shadow: 0 1px 4px rgba(255, 90, 80, 0.2);
 }
 
@@ -802,8 +828,14 @@ h3 {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
+.code-copy-button:focus-visible {
+    outline: 2px solid {{ CREWAI_ORANGE }};
+    outline-offset: 1px;
+}
+
 .code-copy-button:active {
     background: rgba(255, 255, 255, 0.2);
+    transform: scale(0.95);
 }
 
 .code-copy-button.copied {
