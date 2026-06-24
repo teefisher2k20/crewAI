@@ -358,6 +358,68 @@ h3 {
     border-color: '{{ CREWAI_ORANGE }}';
 }
 
+.nav-button,
+.code-copy-button,
+.drawer-close,
+.drawer-open-ide,
+.legend-ide-select,
+.accordion-header,
+.accordion-subheader,
+.router-paths-title,
+.router-events-title,
+.drawer-code-link,
+.trigger-group,
+.condition-label {
+    transition: all 0.2s ease;
+}
+
+.nav-button:focus-visible,
+.code-copy-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.legend-ide-select:focus-visible,
+.accordion-header:focus-visible,
+.accordion-subheader:focus-visible,
+.router-paths-title:focus-visible,
+.router-events-title:focus-visible,
+.drawer-code-link:focus-visible,
+.trigger-group:focus-visible,
+.condition-label:focus-visible {
+    outline: 2px solid '{{ CREWAI_ORANGE }}';
+    outline-offset: 1px;
+}
+
+.nav-button:active,
+.drawer-close:active,
+.drawer-open-ide:active,
+.code-copy-button:active,
+.accordion-header:active,
+.accordion-subheader:active,
+.trigger-group:active,
+.condition-label:active {
+    transform: scale(0.95);
+}
+
+.accordion-header,
+.accordion-subheader,
+.router-paths-title,
+.router-events-title,
+.drawer-code-link,
+.trigger-group,
+.condition-label {
+    border: none;
+    width: 100%;
+    background: none;
+    padding: 0;
+    text-align: left;
+    font-family: inherit;
+}
+
+.drawer-code-link {
+    width: auto;
+    font-family: monospace;
+}
+
 .nav-button {
     width: 40px;
     height: 40px;
@@ -899,7 +961,6 @@ h3 {
     padding: 10px 10px;
     cursor: pointer;
     background: rgba(102,102,102,0.05);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
 }
 
@@ -910,7 +971,6 @@ h3 {
     padding: 10px 10px;
     cursor: pointer;
     background:  #0d1117;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: none;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -922,7 +982,7 @@ h3 {
 }
 
 .accordion-header:active {
-    background: rgba(102,102,102,0.15);
+    background: rgba(102,102,102,0.15) !important;
 }
 
 .accordion-title {
