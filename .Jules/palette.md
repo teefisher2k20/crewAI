@@ -1,0 +1,3 @@
+## 2025-05-15 - [Accessibility & CSS Templating in Flow Visualization]
+**Learning:** When converting non-semantic elements (like `div`) to semantic `button` elements, it's crucial to explicitly reset default browser styles (background, border, padding) to maintain visual consistency. Additionally, in custom templating systems, CSS properties like `outline` may fail if placeholders are quoted, and robustness can be improved by supporting both quoted and unquoted placeholder replacements.
+**Action:** Always include CSS resets for buttons and verify that templated variables resolve correctly in the final CSS output.
