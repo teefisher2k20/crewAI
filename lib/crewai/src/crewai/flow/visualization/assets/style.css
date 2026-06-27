@@ -358,6 +358,15 @@ h3 {
     border-color: '{{ CREWAI_ORANGE }}';
 }
 
+.legend-ide-select:focus-visible,
+.nav-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.code-copy-button:focus-visible {
+    outline: 2px solid {{ CREWAI_ORANGE }};
+    outline-offset: 1px;
+}
+
 .nav-button {
     width: 40px;
     height: 40px;
@@ -378,6 +387,8 @@ h3 {
     position: relative;
     z-index: 10002;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0;
+    font: inherit;
 }
 
 .nav-button:hover {
