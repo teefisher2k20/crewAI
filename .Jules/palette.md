@@ -1,0 +1,3 @@
+## 2025-05-15 - [Improving Accessibility in Flow Visualization]
+**Learning:** Converting non-semantic `div` elements to `button` elements is essential for keyboard navigation and screen readers, but requires CSS resets (`padding: 0`, `font: inherit`) to maintain the visual appearance of the original design. Branded `:focus-visible` styles (e.g., using `CREWAI_ORANGE`) provide immediate tactile feedback and align with the visual identity while meeting accessibility standards.
+**Action:** Always use semantic `<button type="button">` for interactive elements and provide explicit `:focus-visible` styles using the design system's primary color.

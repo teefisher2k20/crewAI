@@ -358,9 +358,16 @@ h3 {
     border-color: '{{ CREWAI_ORANGE }}';
 }
 
+.legend-ide-select:focus-visible {
+    outline: 2px solid '{{ CREWAI_ORANGE }}';
+    outline-offset: 1px;
+}
+
 .nav-button {
     width: 40px;
     height: 40px;
+    padding: 0;
+    font: inherit;
     background: var(--bg-secondary);
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
@@ -382,6 +389,11 @@ h3 {
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:focus-visible {
+    outline: 2px solid '{{ CREWAI_ORANGE }}';
+    outline-offset: 1px;
 }
 
 #drawer {
@@ -479,6 +491,11 @@ h3 {
     color: '{{ CREWAI_ORANGE }}';
 }
 
+.drawer-close:focus-visible {
+    outline: 2px solid '{{ CREWAI_ORANGE }}';
+    outline-offset: 1px;
+}
+
 .drawer-close i {
     display: block;
 }
@@ -514,6 +531,11 @@ h3 {
 .drawer-open-ide:active {
     transform: translateY(0);
     box-shadow: 0 1px 4px rgba(255, 90, 80, 0.2);
+}
+
+.drawer-open-ide:focus-visible {
+    outline: 2px solid '{{ CREWAI_ORANGE }}';
+    outline-offset: 1px;
 }
 
 .drawer-open-ide svg,
@@ -804,6 +826,11 @@ h3 {
 
 .code-copy-button:active {
     background: rgba(255, 255, 255, 0.2);
+}
+
+.code-copy-button:focus-visible {
+    outline: 2px solid '{{ CREWAI_ORANGE }}';
+    outline-offset: 1px;
 }
 
 .code-copy-button.copied {
