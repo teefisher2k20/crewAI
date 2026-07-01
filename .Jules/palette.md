@@ -1,0 +1,3 @@
+## 2025-05-15 - [Accessibility Pattern: Semantic Buttons in Visualizations]
+**Learning:** In complex visualizations (like vis.js networks), UI elements outside the canvas (side panels, nav controls) are often implemented as `div` tags for styling ease. This breaks keyboard navigation and screen reader support. Converting them to semantic `<button type="button">` requires careful CSS resets (`border: none`, `background: none`, `padding: 0`) and focus state management (`:focus-visible`).
+**Action:** Always check interactive elements in panels/toolbars for semantic correctness. Use `button` tags and ensure they have `aria-label` if icon-only, and a clear `focus-visible` state using brand-consistent colors.
