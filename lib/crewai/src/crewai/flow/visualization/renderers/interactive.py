@@ -417,6 +417,10 @@ def render_interactive(
     css_content = css_content.replace("'{{ DARK_GRAY }}'", DARK_GRAY)
     css_content = css_content.replace("'{{ GRAY }}'", GRAY)
     css_content = css_content.replace("'{{ CREWAI_ORANGE }}'", CREWAI_ORANGE)
+    css_content = css_content.replace("{{ WHITE }}", WHITE)
+    css_content = css_content.replace("{{ DARK_GRAY }}", DARK_GRAY)
+    css_content = css_content.replace("{{ GRAY }}", GRAY)
+    css_content = css_content.replace("{{ CREWAI_ORANGE }}", CREWAI_ORANGE)
 
     css_output_path.write_text(css_content, encoding="utf-8")
 
