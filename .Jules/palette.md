@@ -1,0 +1,3 @@
+## 2025-05-15 - [Flow Visualization Accessibility and Interaction Refinement]
+**Learning:** Converting non-semantic elements (like `div` or `span`) to semantic `<button>` tags in visualization tools provides significant accessibility gains but requires a complete CSS reset (`border`, `background`, `padding`, `font`) to avoid browser-default styling regressions. Additionally, ensuring that template-driven assets (like `.css` or `.js` files) have their placeholders (e.g., `{{ CREWAI_ORANGE }}`) correctly handled in the backend renderer is crucial for valid syntax.
+**Action:** Always include a comprehensive CSS reset when introducing semantic buttons and verify that the backend `render_interactive` logic supports all placeholder formats used in the assets.
