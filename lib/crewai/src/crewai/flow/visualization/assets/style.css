@@ -362,6 +362,7 @@ h3 {
     width: 40px;
     height: 40px;
     background: var(--bg-secondary);
+    background-clip: padding-box;
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     border: 1px solid var(--border-subtle);
@@ -372,16 +373,31 @@ h3 {
     cursor: pointer;
     box-shadow: 0 2px 8px var(--shadow-color);
     font-size: 18px;
+    font: inherit;
+    padding: 0;
     color: var(--text-primary);
     user-select: none;
     pointer-events: auto;
     position: relative;
     z-index: 10002;
-    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
 }
 
 .nav-button:hover {
     background: var(--nav-button-hover);
+}
+
+.nav-button:active {
+    transform: scale(0.95);
+}
+
+.nav-button:focus-visible,
+.drawer-close:focus-visible,
+.drawer-open-ide:focus-visible,
+.code-copy-button:focus-visible,
+.legend-ide-select:focus-visible {
+    outline: 2px solid var(--edge-router-color);
+    outline-offset: 2px;
 }
 
 #drawer {
@@ -512,7 +528,7 @@ h3 {
 }
 
 .drawer-open-ide:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.95);
     box-shadow: 0 1px 4px rgba(255, 90, 80, 0.2);
 }
 
