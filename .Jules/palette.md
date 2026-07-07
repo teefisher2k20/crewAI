@@ -1,0 +1,3 @@
+## 2025-05-15 - Semantic Button Conversion and CSS Template Variables
+**Learning:** When converting non-semantic elements to buttons in a template-driven environment, explicit CSS resets (`border: none`) are required to prevent browser default styling from breaking the UI. Additionally, Jinja2 placeholders for CSS color values must be unquoted (e.g., `{{ COLOR }}`) as quoted strings (e.g., `'{{ COLOR }}'`) are invalid syntax for most CSS properties and will be ignored by browsers.
+**Action:** Always include `border: none` when using `<button>` for previously custom-styled elements, and verify template variable expansion syntax specifically for CSS values.
